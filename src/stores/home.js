@@ -11,18 +11,18 @@ export default class HomeStore {
   fetchNewProducts = flow(function*() {
     if (this.newProducts.length) return;
     const { products } = yield api.fetchProducts({ orderby: "creationdate" });
-    this.newProducts = products;
+    this.newProducts.replace(products);
   });
 
   fetchHighestRatedProducts = flow(function*() {
     if (this.highestRatedProducts.length) return;
     const { products } = yield api.fetchProducts({ orderby: "rating" });
-    this.highestRatedProducts = products;
+    this.highestRatedProducts.replace(products);
   });
 
   fetchPopularProducts = flow(function*() {
     if (this.popularProducts.length) return;
     const { products } = yield api.fetchProducts({ orderby: "hits" });
-    this.popularProducts = products;
+    this.popularProducts.replace(products);
   });
 }

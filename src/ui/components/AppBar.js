@@ -4,13 +4,13 @@ import AppBar from "material-ui/AppBar";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 
-export default ({ children }) => (
+export default ({ children, title }) => (
   <AppBar position="static">
     <Toolbar>
       <Typography variant="title" color="inherit">
-        Title
+        {title}
       </Typography>
     </Toolbar>
-    <Toolbar>{children}</Toolbar>
+    {children ? <Toolbar>{children}</Toolbar> : undefined}
   </AppBar>
 );

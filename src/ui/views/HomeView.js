@@ -11,6 +11,7 @@ import IconButton from "material-ui/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import sizeMe from "react-sizeme";
 
+import * as navigate from "../../services/navigation";
 import styles from "./HomeView.styles";
 
 const GridListContainer = sizeMe({
@@ -43,10 +44,6 @@ class HomeView extends React.Component {
       "snack"
     ]
   };
-
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     this.switchTab(0);
@@ -88,13 +85,20 @@ class HomeView extends React.Component {
     this.setState({ currentTab: i });
   };
 
+  handleProductClick = event => {
+    try {
+      const ean = parseInt(event.currentTarget.getAttribute("dataean"));
+      navigate.toProduct(ean);
+    } catch (error) {}
+  };
+
   render() {
     const { classes, homeStore } = this.props;
     const { currentTab, tabs } = this.state;
 
     return (
       <div className={classes.root}>
-        <AppBar>
+        <AppBar title="Home">
           <Tabs value={currentTab} onChange={this.handleChange} scrollable>
             {tabs.map(label => <Tab key={label} label={label} />)}
           </Tabs>
@@ -103,7 +107,11 @@ class HomeView extends React.Component {
         <GridListContainer className={classes.gridContainer}>
           <GridList cellHeight={180} className={classes.gridList}>
             {this.getTabProducts(currentTab).map(p => (
-              <GridListTile key={p.ean}>
+              <GridListTile
+                key={p.ean}
+                dataean={p.ean}
+                onClick={this.handleProductClick}
+              >
                 <img
                   src={
                     "https://storage.googleapis.com/vegstorage/thumb-" + p.ean
