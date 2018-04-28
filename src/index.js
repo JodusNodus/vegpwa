@@ -12,12 +12,12 @@ import stores from "./stores/index";
 import registerServiceWorker from "./registerServiceWorker";
 
 ReactDOM.render(
-	<Provider {...stores}>
-		<Router history={history}>
-			<App />
-		</Router>
-	</Provider>,
-	document.getElementById("root")
+  <Provider {...stores}>
+    <Router history={history}>
+      <App />
+    </Router>
+  </Provider>,
+  document.getElementById("root")
 );
 
 registerServiceWorker();

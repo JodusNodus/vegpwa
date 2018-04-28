@@ -1,3 +1,4 @@
+import queryString from "query-string";
 import { VEGAPI_URL } from "../constants";
 
 async function req(path = "/", method = "GET", body) {
@@ -35,6 +36,57 @@ export async function signup(signupForm) {
   }
 }
 
+export async function login(loginForm) {
+  try {
+    const { user } = await req("/login", "POST", loginForm);
+    return user;
+  } catch (error) {
+    return null;
+  }
+}
+
 export async function updateLocation({ lat, lng }) {
   await req("/api/location", "POST", { lat, lng });
+}
+
+export async function fetchProducts(options) {
+  const query = queryString.stringify(options);
+  return await req("/api/products?" + query);
+}
+
+export async function fetchProduct(ean) {
+  return await req("/api/products/" + ean);
+}
+
+export async function rateProduct(ean, rating) {
+  await req("/api/products/" + ean + "/rate", "POST", {
+    rating
+  });
+}
+
+export async function markProductInvalid(ean) {
+  await req("/api/products/" + ean, "DELETE");
+}
+
+export async function fetchSupermarkets() {
+  return await req("/api/supermarkets");
+}
+
+export async function fetchLabels() {
+  return await req("/api/labels");
+}
+
+export async function fetchBrands() {
+  return await req("/api/brands");
+}
+
+export async function uploadProductImage(ean, file) {
+  const form = new FormData();
+  form.append("ean", ean);
+  form.append("picture", file);
+  return await req("/api/products/picture", "POST", form);
+}
+
+export async function createProduct(product) {
+  await req("/api/products", "POST", product);
 }

@@ -6,7 +6,8 @@ import { STATE } from "../constants";
 import { getCurrentPosition } from "../services/location";
 
 async function updateLocation() {
-  const coords = await getCurrentPosition();
+  // const coords = await getCurrentPosition();
+  const coords = { lat: 51.376944599999995, lng: 4.4555944 };
   await api.updateLocation(coords);
 }
 
