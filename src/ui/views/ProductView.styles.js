@@ -12,7 +12,8 @@ export default theme => ({
     position: "absolute",
     margin: 20,
     left: 0,
-    top: 0
+    top: 0,
+    zIndex: 100
   },
   coverPicture: {
     objectFit: "cover",
@@ -21,19 +22,20 @@ export default theme => ({
   },
   coverOverlay: {
     position: "absolute",
-    height: "50%",
     right: 0,
+    top: 0,
     bottom: 0,
     left: 0,
     backgroundImage: "linear-gradient(to bottom,transparent,#000)",
-    opacity: 0.6
+    opacity: 0.4
   },
   productTitle: {
     textTransform: "capitalize",
     color: "white",
+    fontSize: "1.6rem",
     position: "absolute",
     margin: 30,
-    marginBottom: 20,
+    marginBottom: 25,
     bottom: 0
   },
   paper: {
