@@ -4,11 +4,13 @@ import { withStyles } from "material-ui/styles";
 import AppBar from "../components/AppBar";
 import Tabs, { Tab } from "material-ui/Tabs";
 import Typography from "material-ui/Typography";
+import Button from "material-ui/Button";
 
 import GridList, { GridListTile, GridListTileBar } from "material-ui/GridList";
 import Subheader from "material-ui/List/ListSubheader";
 import IconButton from "material-ui/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
+import AddIcon from "@material-ui/icons/Add";
 import sizeMe from "react-sizeme";
 
 import * as navigate from "../../services/navigation";
@@ -92,6 +94,10 @@ class HomeView extends React.Component {
     } catch (error) {}
   };
 
+  handleCreateProductClick = event => {
+    navigate.toCreateProduct();
+  };
+
   render() {
     const { classes, homeStore } = this.props;
     const { currentTab, tabs } = this.state;
@@ -123,6 +129,16 @@ class HomeView extends React.Component {
             ))}
           </GridList>
         </GridListContainer>
+
+        <Button
+          variant="fab"
+          color="secondary"
+          aria-label="create product"
+          className={classes.createProductBtn}
+          onClick={this.handleCreateProductClick}
+        >
+          <AddIcon />
+        </Button>
       </div>
     );
   }

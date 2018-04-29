@@ -11,6 +11,8 @@ import { history } from "./services/navigation";
 import stores, { hydrateStores } from "./stores/index";
 import registerServiceWorker from "./registerServiceWorker";
 
+stores.userStore.login();
+
 ReactDOM.render(
   <Provider {...stores}>
     <Router history={history}>
@@ -21,8 +23,6 @@ ReactDOM.render(
 );
 
 registerServiceWorker();
-
-stores.userStore.login();
 
 hydrateStores(stores)
   .then(() => console.log("Stores hydrated"))

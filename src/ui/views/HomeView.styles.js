@@ -10,5 +10,11 @@ export default theme => ({
   },
   gridList: {
     height: "100%"
+  },
+  createProductBtn: {
+    position: "absolute",
+    margin: 20,
+    bottom: 0,
+    right: 0
   }
 });
