@@ -8,7 +8,7 @@ import App from "./App";
 
 import { Router } from "react-router-dom";
 import { history } from "./services/navigation";
-import stores from "./stores/index";
+import stores, { hydrateStores } from "./stores/index";
 import registerServiceWorker from "./registerServiceWorker";
 
 ReactDOM.render(
@@ -23,3 +23,7 @@ ReactDOM.render(
 registerServiceWorker();
 
 stores.userStore.login();
+
+hydrateStores(stores)
+  .then(() => console.log("Stores hydrated"))
+  .catch(console.error);

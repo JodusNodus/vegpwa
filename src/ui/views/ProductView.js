@@ -12,16 +12,21 @@ import Avatar from "material-ui/Avatar";
 import List, { ListItem, ListItemText } from "material-ui/List";
 import StoreIcon from "@material-ui/icons/Store";
 import IconButton from "material-ui/IconButton";
+import Snackbar from "material-ui/Snackbar";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+
 import * as navigate from "../../services/navigation";
 import styles from "./ProductView.styles";
 
+@inject("favoritesStore")
 @inject("productStore")
 @observer
 class ProductView extends React.Component {
-  state = {};
+  state = {
+    snackBarText: null
+  };
 
   componentDidMount() {
     const { match, productStore } = this.props;
@@ -33,14 +38,42 @@ class ProductView extends React.Component {
     navigate.goBack();
   };
 
-  handleFavoriteBtn = () => {};
+  toggleFavorite = () => {
+    const { productStore, favoritesStore } = this.props;
+    if (!favoritesStore.isFavorite(productStore.product.ean)) {
+      favoritesStore.add(productStore.product);
+      return true;
+    } else {
+      favoritesStore.remove(productStore.product.ean);
+      return false;
+    }
+  };
+
+  handleFavoriteBtn = () => {
+    if (this.toggleFavorite()) {
+      this.setState({ snackBarText: "Toegevoegd aan favorieten" });
+    } else {
+      this.setState({ snackBarText: "Verwijderd uit favorieten" });
+    }
+  };
+
+  handleUndoClick = () => {
+    this.toggleFavorite();
+    this.handleSnackBarClose();
+  };
+
+  handleSnackBarClose = () => {
+    this.setState({ snackBarText: null });
+  };
 
   handleRateBtn = () => {};
 
   handleIncorrectBtn = () => {};
 
+  handleIncorrectBtn = () => {};
+
   render() {
-    const { classes, productStore } = this.props;
+    const { classes, productStore, favoritesStore } = this.props;
 
     if (!productStore.product) {
       return <div className={classes.root} />;
@@ -75,7 +108,11 @@ class ProductView extends React.Component {
             className={classes.favoriteBtn}
             onClick={this.handleFavoriteBtn}
           >
-            <FavoriteIcon />
+            {favoritesStore.isFavorite(product.ean) ? (
+              <FavoriteBorderIcon />
+            ) : (
+              <FavoriteIcon />
+            )}
           </Button>
 
           <Typography variant="body1" className={classes.item}>
@@ -146,6 +183,30 @@ class ProductView extends React.Component {
             ))}
           </List>
         </Paper>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          open={!!this.state.snackBarText}
+          autoHideDuration={5000}
+          onClose={this.handleSnackBarClose}
+          SnackbarContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          message={<span id="message-id">{this.state.snackBarText}</span>}
+          action={[
+            <Button
+              key="undo"
+              color="secondary"
+              size="small"
+              onClick={this.handleUndoClick}
+            >
+              UNDO
+            </Button>
+          ]}
+        />
       </div>
     );
   }
