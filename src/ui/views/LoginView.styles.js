@@ -5,6 +5,17 @@ export default theme => ({
     flexGrow: 1
   },
   paper: {
-    padding: "18pt"
+    padding: 25,
+    margin: 10
+  },
+  input: {
+    marginTop: 10
+  },
+  btnContainer: {
+    display: "flex",
+    flexDirection: "row-reverse"
+  },
+  btn: {
+    marginTop: 20
   }
 });

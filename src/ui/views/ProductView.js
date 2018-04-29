@@ -39,13 +39,6 @@ class ProductView extends React.Component {
 
   handleIncorrectBtn = () => {};
 
-  handleSupermarketClick = event => {
-    try {
-      const placeid = event.currentTarget.getAttribute("dataplaceid");
-      console.log(placeid);
-    } catch (error) {}
-  };
-
   render() {
     const { classes, productStore } = this.props;
 
@@ -139,7 +132,6 @@ class ProductView extends React.Component {
             {product.supermarkets.map(({ placeid, name, address }) => (
               <a
                 key={placeid}
-                dataplaceid={placeid}
                 target="blank"
                 className={classes.supermarketItem}
                 href={`https://www.google.com/maps/search/?api=1&query=${name}&query_place_id=${placeid}`}
