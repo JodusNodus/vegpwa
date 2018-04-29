@@ -2,10 +2,10 @@ import { configure } from "mobx";
 import localforage from "../services/storage";
 import { create } from "mobx-persist";
 
-import UserStore from "./user";
-import HomeStore from "./home";
-import ProductStore from "./product";
-import FavoritesStore from "./favorites";
+import UserStore from "./UserStore";
+import HomeStore from "./HomeStore";
+import ProductStore from "./ProductStore";
+import FavoritesStore from "./FavoritesStore";
 
 configure({ enforceActions: true });
 
