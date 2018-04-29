@@ -7,6 +7,10 @@ import * as api from "../services/vegapi";
 export default class ProductStore {
   @observable product = null;
 
+  constructor(stores) {
+    this.stores = stores;
+  }
+
   @computed
   get displayName() {
     return this.product.brand.name + " " + this.product.name;
@@ -20,6 +24,10 @@ export default class ProductStore {
   }
 
   fetchProduct = flow(function*(ean) {
+    const storedProduct = this.stores.favoritesStore.get(ean);
+    if (storedProduct) {
+      this.product = storedProduct;
+    }
     const { product } = yield api.fetchProduct(ean);
     this.product = product;
   });

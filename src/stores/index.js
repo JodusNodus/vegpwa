@@ -11,7 +11,7 @@ configure({ enforceActions: true });
 
 const hydrate = create({
   storage: localforage,
-  jsonify: false
+  jsonify: true
 });
 
 const stores = {};

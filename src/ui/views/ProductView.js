@@ -203,7 +203,7 @@ class ProductView extends React.Component {
               size="small"
               onClick={this.handleUndoClick}
             >
-              UNDO
+              ONGEDAAN MAKEN
             </Button>
           ]}
         />
