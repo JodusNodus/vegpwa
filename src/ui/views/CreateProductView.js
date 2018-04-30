@@ -89,7 +89,7 @@ class CreateProductView extends React.Component {
       <div className={classes.root}>
         <Paper square elevation={0} className={classes.header}>
           <Typography>
-            Step {activeStep + 1} of {steps.length}: {steps[activeStep].label}
+            Stap {activeStep + 1} van {steps.length}: {steps[activeStep].label}
           </Typography>
         </Paper>
         <div className={classes.screenContainer}>
@@ -120,7 +120,7 @@ class CreateProductView extends React.Component {
                 !steps[activeStep].isDone(this.props)
               }
             >
-              Next
+              Volgende
               <KeyboardArrowRight />
             </Button>
           }
@@ -131,7 +131,7 @@ class CreateProductView extends React.Component {
               disabled={activeStep === 0}
             >
               <KeyboardArrowLeft />
-              Back
+              Terug
             </Button>
           }
         />

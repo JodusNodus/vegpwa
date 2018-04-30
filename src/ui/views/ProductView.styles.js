@@ -1,46 +1,11 @@
 export default theme => ({
   root: {
+    width: "100%",
+    overflow: "auto",
     display: "flex",
-    flexDirection: "column"
-  },
-  coverContainer: {
-    height: 220,
-    position: "relative"
-  },
-  backBtn: {
-    color: "white",
-    position: "absolute",
-    margin: 20,
-    left: 0,
-    top: 0,
-    zIndex: 100
-  },
-  coverPicture: {
-    objectFit: "cover",
-    height: "100%",
-    width: "100%"
-  },
-  coverOverlay: {
-    position: "absolute",
-    right: 0,
-    top: 0,
-    bottom: 0,
-    left: 0,
-    backgroundImage: "linear-gradient(to bottom,transparent,#000)",
-    opacity: 0.4
-  },
-  productTitle: {
-    textTransform: "capitalize",
-    color: "white",
-    fontSize: "1.6rem",
-    position: "absolute",
-    margin: 30,
-    marginBottom: 25,
-    bottom: 0
-  },
-  paper: {
-    position: "relative",
-    padding: 20
+    flexDirection: "column",
+    alignItems: "center",
+    flexGrow: 1
   },
   favoriteBtn: {
     position: "absolute",

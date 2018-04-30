@@ -15,6 +15,8 @@ import IconButton from "material-ui/IconButton";
 import Chip from "material-ui/Chip";
 import _ from "lodash";
 
+import ProductPaperLayout from "../components/ProductPaperLayout";
+
 import EmailIcon from "@material-ui/icons/Email";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
@@ -73,71 +75,60 @@ class ProductFormView extends React.Component {
     const { fields, errors, showPassword } = this.state;
 
     return (
-      <Grid container className={classes.root}>
-        <Grid item xs={12} sm={8} md={6}>
-          <div className={classes.coverContainer}>
-            <img
-              src={
-                createProductStore.pictureUploaded
-                  ? `https://storage.googleapis.com/vegstorage/cover-${
-                      createProductStore.ean
-                    }`
-                  : undefined
-              }
-              className={classes.coverPicture}
-            />
-            <div className={classes.coverOverlay} />
-          </div>
+      <div className={classes.root}>
+        <ProductPaperLayout
+          title={
+            createProductStore.brandname + " " + createProductStore.productName
+          }
+          imageSrc={
+            createProductStore.pictureUploaded
+              ? `https://storage.googleapis.com/vegstorage/cover-${
+                  createProductStore.ean
+                }`
+              : undefined
+          }
+        >
+          <AutoCompleteTextField
+            label="Merk"
+            options={createProductStore.brands}
+            className={classes.input}
+            onChange={evt => createProductStore.setBrandName(evt.target.value)}
+            error={!!errors.brandname}
+            value={createProductStore.brandname}
+          />
 
-          <Paper elevation={4} className={classes.paper}>
-            <Typography variant="display1" className={classes.productTitle}>
-              {createProductStore.brandname} {createProductStore.productName}
-            </Typography>
-
-            <AutoCompleteTextField
-              label="Merk"
-              options={createProductStore.brands}
-              className={classes.input}
-              onChange={evt =>
-                createProductStore.setBrandName(evt.target.value)
-              }
-              error={!!errors.brandname}
-              value={createProductStore.brandname}
-            />
-
-            <TextField
-              fullWidth
-              label="Product Naam"
-              className={classes.input}
-              onChange={evt =>
-                createProductStore.setProductName(evt.target.value)
-              }
-              error={!!errors.productName}
-              value={createProductStore.productName}
-            />
-
-            {
-              // <div>
-              //   {createProductStore.productLabels.map((label, i) => (
-              //     <Chip
-              //       key={i}
-              //       label={label}
-              //       onDelete={() => createProductStore.removeLabel(label)}
-              //       className={classes.chip}
-              //     />
-              //   ))}
-              // </div>
-              // <AutoCompleteTextField
-              //   label="Labels"
-              //   options={createProductStore.productLabels}
-              //   className={classes.input}
-              //   onChange={this.handleFieldChange("labelField")}
-              //   value={fields.labelField}
-              // />
+          <TextField
+            fullWidth
+            label="Product Naam"
+            className={classes.input}
+            onChange={evt =>
+              createProductStore.setProductName(evt.target.value)
             }
-          </Paper>
-        </Grid>
-      </Grid>
+            error={!!errors.productName}
+            value={createProductStore.productName}
+          />
+
+          {
+            // <div>
+            //   {createProductStore.productLabels.map((label, i) => (
+            //     <Chip
+            //       key={i}
+            //       label={label}
+            //       onDelete={() => createProductStore.removeLabel(label)}
+            //       className={classes.chip}
+            //     />
+            //   ))}
+            // </div>
+            // <AutoCompleteTextField
+            //   label="Labels"
+            //   options={createProductStore.productLabels}
+            //   className={classes.input}
+            //   onChange={this.handleFieldChange("labelField")}
+            //   value={fields.labelField}
+            // />
+          }
+        </ProductPaperLayout>
+      </div>
     );
   }
 }

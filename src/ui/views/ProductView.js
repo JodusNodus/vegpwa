@@ -11,11 +11,11 @@ import Paper from "material-ui/Paper";
 import Avatar from "material-ui/Avatar";
 import List, { ListItem, ListItemText } from "material-ui/List";
 import StoreIcon from "@material-ui/icons/Store";
-import IconButton from "material-ui/IconButton";
 import Snackbar from "material-ui/Snackbar";
-import BackIcon from "@material-ui/icons/ArrowBack";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+
+import ProductPaperLayout from "../components/ProductPaperLayout";
 
 import * as navigate from "../../services/navigation";
 import styles from "./ProductView.styles";
@@ -82,25 +82,11 @@ class ProductView extends React.Component {
 
     return (
       <div className={classes.root}>
-        <div className={classes.coverContainer}>
-          <IconButton
-            className={classes.backBtn}
-            aria-label="back"
-            onClick={this.handleBackBtn}
-          >
-            <BackIcon />
-          </IconButton>
-          <img
-            src={product.coverPicture}
-            alt={product.name}
-            className={classes.coverPicture}
-          />
-          <div className={classes.coverOverlay} />
-          <Typography variant="display1" className={classes.productTitle}>
-            {productStore.displayName}
-          </Typography>
-        </div>
-        <Paper elevation={0} className={classes.paper}>
+        <ProductPaperLayout
+          title={productStore.displayName}
+          onBack={this.handleBackBtn}
+          imageSrc={product.coverPicture}
+        >
           <Button
             variant="fab"
             color="secondary"
@@ -182,7 +168,7 @@ class ProductView extends React.Component {
               </a>
             ))}
           </List>
-        </Paper>
+        </ProductPaperLayout>
 
         <Snackbar
           anchorOrigin={{
