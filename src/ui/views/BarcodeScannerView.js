@@ -30,6 +30,15 @@ class BarcodeScannerView extends React.Component {
     barcode: ""
   };
 
+  constructor(props) {
+    super(props);
+    props.onNext(this.handleNext);
+  }
+
+  handleNext = () => {
+    return true;
+  };
+
   handleChange = value => {
     this.setState({
       barcode: value

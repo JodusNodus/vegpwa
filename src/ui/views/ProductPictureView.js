@@ -19,36 +19,37 @@ class ProductPictureView extends React.Component {
 
   constructor(props) {
     super(props);
+    props.onNext(this.handleNext);
     this.cropperRef = React.createRef();
   }
+
+  handleNext = () => {
+    const dataUrl = this.cropperRef.current.getCroppedCanvas().toBlob(blob => {
+      this.props.createProductStore.uploadPicture(blob);
+    }, "image/jpeg");
+    return true;
+  };
 
   handleChange = evt => {
     const reader = new FileReader();
     const file = evt.target.files[0];
 
     reader.onload = upload => {
-      this.props.createProductStore.setOriginalPictureData(
-        upload.target.result
-      );
+      this.setState({ dataUri: upload.target.result });
+      this.props.createProductStore.pictureIsTaken();
     };
 
     reader.readAsDataURL(file);
   };
-
-  componentWillUnmount() {
-    // Back or Next has been pressed
-    const dataUrl = this.cropperRef.current.getCroppedCanvas().toDataURL();
-    this.props.createProductStore.setCroppedPictureData(dataUrl);
-  }
 
   render() {
     const { classes, createProductStore } = this.props;
 
     return (
       <div className={classes.root}>
-        {createProductStore.originalPictureData.length ? (
+        {this.state.dataUri ? (
           <Cropper
-            src={createProductStore.originalPictureData}
+            src={this.state.dataUri}
             ref={this.cropperRef}
             aspectRatio={4 / 3}
             className={classes.cropper}
@@ -68,8 +69,9 @@ class ProductPictureView extends React.Component {
                 variant="raised"
                 component="span"
                 className={classes.button}
+                color="secondary"
               >
-                Upload
+                foto nemen
                 <Icon className={classes.rightBtnIcon}>camera_alt</Icon>
               </Button>
             </label>

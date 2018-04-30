@@ -13,7 +13,8 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
 import BarcodeScannerView from "./BarcodeScannerView";
 import ProductPictureView from "./ProductPictureView";
-import LoginView from "./LoginView";
+import ProductFormView from "./ProductFormView";
+import SupermarketPickerView from "./SupermarketPickerView";
 
 import * as navigate from "../../services/navigation";
 import styles from "./CreateProductView.styles";
@@ -25,23 +26,37 @@ class CreateProductView extends React.Component {
     activeStep: 0,
     steps: [
       {
-        label: "Barcode invoeren",
+        label: "Voer de barcode in",
         isDone: props => props.createProductStore.ean != -1,
-        component: BarcodeScannerView
+        Component: BarcodeScannerView
       },
       {
-        label: "Foto maken",
-        isDone: props =>
-          props.createProductStore.originalPictureData.length > 0,
-        component: ProductPictureView
+        label: "Selecteer de supermarkt van afkomst",
+        isDone: props => props.createProductStore.placeid,
+        Component: SupermarketPickerView
       },
       {
-        label: "Informatie invullen",
+        label: "Maak een product foto",
+        isDone: props => props.createProductStore.pictureTaken,
+        Component: ProductPictureView
+      },
+      {
+        label: "Vul naam en merk in",
         isDone: () => true,
-        component: LoginView
+        Component: ProductFormView
+      },
+      {
+        label: "Voeg labels toe",
+        isDone: () => true,
+        Component: ProductFormView
       }
     ]
   };
+
+  componentDidMount() {
+    this.props.createProductStore.fetchSupermarkets();
+    this.props.createProductStore.fetchFormData();
+  }
 
   handleNext = () => {
     const activeStep = this.state.activeStep + 1;
@@ -49,8 +64,10 @@ class CreateProductView extends React.Component {
     if (activeStep > this.state.steps) {
       // done
     } else {
-      this.setState({ activeStep });
-      navigate.toCreateProduct(activeStep + 1);
+      if (this.handleRouteNext()) {
+        this.setState({ activeStep });
+        navigate.toCreateProduct(activeStep + 1);
+      }
     }
   };
 
@@ -58,6 +75,10 @@ class CreateProductView extends React.Component {
     const activeStep = this.state.activeStep - 1;
     this.setState({ activeStep });
     navigate.toCreateProduct(activeStep + 1);
+  };
+
+  handleNextSet = handleNext => {
+    this.handleRouteNext = handleNext;
   };
 
   render() {
@@ -73,11 +94,13 @@ class CreateProductView extends React.Component {
         </Paper>
         <div className={classes.screenContainer}>
           <Switch>
-            {steps.map((s, i) => (
+            {steps.map(({ Component }, i) => (
               <Route
                 key={i}
                 path={`/create/${i + 1}`}
-                component={s.component}
+                render={props => (
+                  <Component onNext={this.handleNextSet} {...props} />
+                )}
               />
             ))}
           </Switch>

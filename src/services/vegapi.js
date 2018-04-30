@@ -8,11 +8,14 @@ async function req(path = "/", method = "GET", body) {
     mode: "cors",
     cache: "no-cache",
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
+      Accept: "application/json"
     }
   };
-  if (body) {
+  if (body instanceof FormData) {
+    //options.headers["Content-Type"] = "multipart/form-data";
+    options.body = body;
+  } else {
+    options.headers["Content-Type"] = "application/json";
     options.body = JSON.stringify(body);
   }
   const url = VEGAPI_URL + path;
@@ -80,7 +83,7 @@ export async function fetchBrands() {
   return await req("/api/brands");
 }
 
-export async function uploadProductImage(ean, file) {
+export async function uploadProductPicture(ean, file) {
   const form = new FormData();
   form.append("ean", ean);
   form.append("picture", file);
