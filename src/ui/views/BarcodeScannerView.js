@@ -23,6 +23,8 @@ function NumberFormatCustom(props) {
   );
 }
 
+@inject("createProductStore")
+@observer
 class BarcodeScannerView extends React.Component {
   state = {
     barcode: ""
@@ -32,6 +34,11 @@ class BarcodeScannerView extends React.Component {
     this.setState({
       barcode: value
     });
+    if (value.length === 13) {
+      this.props.createProductStore.setEan(parseInt(value));
+    } else {
+      this.props.createProductStore.setEan(-1);
+    }
   };
 
   render() {

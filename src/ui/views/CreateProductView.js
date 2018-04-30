@@ -12,18 +12,35 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
 import BarcodeScannerView from "./BarcodeScannerView";
-import SplashView from "./SplashView";
+import ProductPictureView from "./ProductPictureView";
 import LoginView from "./LoginView";
-import HomeView from "./HomeView";
-import ProductView from "./ProductView";
 
 import * as navigate from "../../services/navigation";
 import styles from "./CreateProductView.styles";
 
+@inject("createProductStore")
+@observer
 class CreateProductView extends React.Component {
   state = {
     activeStep: 0,
-    steps: ["barcode inscannen", "login", "home"]
+    steps: [
+      {
+        label: "Barcode invoeren",
+        isDone: props => props.createProductStore.ean != -1,
+        component: BarcodeScannerView
+      },
+      {
+        label: "Foto maken",
+        isDone: props =>
+          props.createProductStore.originalPictureData.length > 0,
+        component: ProductPictureView
+      },
+      {
+        label: "Informatie invullen",
+        isDone: () => true,
+        component: LoginView
+      }
+    ]
   };
 
   handleNext = () => {
@@ -46,31 +63,39 @@ class CreateProductView extends React.Component {
   render() {
     const { classes, theme } = this.props;
     const { activeStep, steps } = this.state;
+
     return (
       <div className={classes.root}>
         <Paper square elevation={0} className={classes.header}>
           <Typography>
-            Step {activeStep + 1} of {steps.length}: {steps[activeStep]}
+            Step {activeStep + 1} of {steps.length}: {steps[activeStep].label}
           </Typography>
         </Paper>
         <div className={classes.screenContainer}>
           <Switch>
-            <Route path="/create/1" component={BarcodeScannerView} />
-            <Route path="/create/2" component={LoginView} />
-            <Route path="/create/4" component={HomeView} />
+            {steps.map((s, i) => (
+              <Route
+                key={i}
+                path={`/create/${i + 1}`}
+                component={s.component}
+              />
+            ))}
           </Switch>
         </div>
         <MobileStepper
           variant="text"
           steps={steps.length}
           position="static"
-          activeStep={this.state.activeStep}
+          activeStep={activeStep}
           className={classes.stepper}
           nextButton={
             <Button
               size="small"
               onClick={this.handleNext}
-              disabled={this.state.activeStep >= steps.length}
+              disabled={
+                activeStep >= steps.length ||
+                !steps[activeStep].isDone(this.props)
+              }
             >
               Next
               <KeyboardArrowRight />
@@ -80,7 +105,7 @@ class CreateProductView extends React.Component {
             <Button
               size="small"
               onClick={this.handleBack}
-              disabled={this.state.activeStep === 0}
+              disabled={activeStep === 0}
             >
               <KeyboardArrowLeft />
               Back
