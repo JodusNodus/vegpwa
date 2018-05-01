@@ -36,39 +36,49 @@ const bounceTransition = {
   }
 };
 
+const styles = {
+  root: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column"
+  }
+};
+
 @inject("connectionStore")
 @observer
 export default class App extends React.Component {
   render() {
     return (
-      <div>
-        <AnimatedSwitch
-          atEnter={bounceTransition.atEnter}
-          atLeave={bounceTransition.atLeave}
-          atActive={bounceTransition.atActive}
-          mapStyles={mapStyles}
-          className="switch-wrapper"
-        >
-          <Route path="/splash" component={SplashView} />
-          <Route path="/signup" component={LoginView} />
-          <Route path="/home" component={HomeView} />
-          <Route path="/product/:ean" component={ProductView} />
-          <Route path="/create" component={CreateProductView} />
-        </AnimatedSwitch>
+      <Route path="/">
+        <div style={styles.root}>
+          <AnimatedSwitch
+            atEnter={bounceTransition.atEnter}
+            atLeave={bounceTransition.atLeave}
+            atActive={bounceTransition.atActive}
+            mapStyles={mapStyles}
+            className="switch-wrapper"
+          >
+            <Route path="/signup" component={LoginView} />
+            <Route path="/home" component={HomeView} />
+            <Route path="/product/:ean" component={ProductView} />
+            <Route path="/create" component={CreateProductView} />
+            <Route path="/splash" component={SplashView} />
+          </AnimatedSwitch>
 
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          open={!this.props.connectionStore.onLine}
-          autoHideDuration={false}
-          SnackbarContentProps={{
-            "aria-describedby": "message-id"
-          }}
-          message={<span id="message-id">U bent offline</span>}
-        />
-      </div>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center"
+            }}
+            open={!this.props.connectionStore.onLine}
+            autoHideDuration={null}
+            SnackbarContentProps={{
+              "aria-describedby": "message-id"
+            }}
+            message={<span id="message-id">U bent offline</span>}
+          />
+        </div>
+      </Route>
     );
   }
 }
