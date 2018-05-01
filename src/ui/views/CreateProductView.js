@@ -55,8 +55,15 @@ class CreateProductView extends React.Component {
   };
 
   componentDidMount() {
+    this.unblock = navigate.history.block(
+      "Ben je zeker dat je het product niet wilt aanmaken?"
+    );
     this.props.createProductStore.fetchSupermarkets();
     this.props.createProductStore.fetchFormData();
+  }
+
+  componentWillUnmount() {
+    this.unblock();
   }
 
   handleNext = () => {
