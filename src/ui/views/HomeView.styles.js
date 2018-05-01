@@ -4,13 +4,6 @@ export default theme => ({
     display: "flex",
     flexDirection: "column"
   },
-  gridContainer: {
-    flex: 1,
-    overflow: "hidden"
-  },
-  gridList: {
-    height: "100%"
-  },
   createProductBtn: {
     position: "absolute",
     margin: 20,

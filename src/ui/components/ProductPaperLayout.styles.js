@@ -39,19 +39,28 @@ export default theme => ({
     opacity: 0.4
   },
   productTitle: {
-    textTransform: "capitalize",
-    color: "white",
-    fontSize: "1.6rem",
     top: "-1.6rem",
-    left: 20,
+    paddingLeft: 15,
+    paddingRight: 80,
+    left: 0,
+    color: "white",
+    bottom: 0,
     position: "absolute",
+    fontSize: "1.6rem",
     marginTop: -20,
-    bottom: 0
+    textTransform: "capitalize",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    boxSizing: "border-box",
+    width: "100%"
   },
   paper: {
     position: "relative",
-    margin: 10,
     marginTop: "-15%",
-    padding: 25
+    padding: 25,
+    width: "calc(100% - 20px)",
+    maxWidth: 450,
+    boxSizing: "border-box"
   }
 });

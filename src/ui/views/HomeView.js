@@ -7,21 +7,12 @@ import Button from "material-ui/Button";
 
 import GridList, { GridListTile, GridListTileBar } from "material-ui/GridList";
 import AddIcon from "@material-ui/icons/Add";
-import sizeMe from "react-sizeme";
+
+import ProductTile from "../components/ProductTile";
+import ProductTileGrid from "../components/ProductTileGrid";
 
 import * as navigate from "../../services/navigation";
 import styles from "./HomeView.styles";
-
-const GridListContainer = sizeMe({
-  monitorHeight: true,
-  monitorWidth: false,
-  refreshRate: 1000,
-  refreshMode: "debounce"
-})(props => (
-  <div className={props.className}>
-    <div style={{ height: props.size.height }}>{props.children}</div>
-  </div>
-));
 
 const TABTYPE = {
   new: "nieuw",
@@ -106,25 +97,11 @@ class HomeView extends React.Component {
           </Tabs>
         </AppBar>
 
-        <GridListContainer className={classes.gridContainer}>
-          <GridList cellHeight={180} className={classes.gridList}>
-            {this.getTabProducts(currentTab).map(p => (
-              <GridListTile
-                key={p.ean}
-                dataean={p.ean}
-                onClick={this.handleProductClick}
-              >
-                <img
-                  src={
-                    "https://storage.googleapis.com/vegstorage/thumb-" + p.ean
-                  }
-                  alt={p.name}
-                />
-                <GridListTileBar title={p.brand.name + " " + p.name} />
-              </GridListTile>
-            ))}
-          </GridList>
-        </GridListContainer>
+        <ProductTileGrid>
+          {this.getTabProducts(currentTab).map(p => (
+            <ProductTile key={p.ean} onClick={this.handleProductClick} {...p} />
+          ))}
+        </ProductTileGrid>
 
         <Button
           variant="fab"
