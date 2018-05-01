@@ -1,29 +1,32 @@
 import React from "react";
+import { observer } from "mobx-react";
 import { withStyles } from "material-ui/styles";
 import styles from "./ProductTileGrid.styles";
 import sizeMe from "react-sizeme";
 
-const GridListContainer = sizeMe({
-  monitorHeight: true,
-  monitorWidth: false,
-  refreshRate: 1000,
-  refreshMode: "debounce"
-})(props => (
-  <div className={props.className}>
-    <div style={{ height: props.size.height, overflow: "auto" }}>
-      {props.children}
-    </div>
-  </div>
-));
+import * as navigate from "../../services/navigation";
+import ProductTile from "./ProductTile";
 
+@observer
 class ProductTileGrid extends React.Component {
+  handleProductClick = event => {
+    try {
+      const ean = parseInt(event.currentTarget.getAttribute("dataean"), 10);
+      navigate.toProduct(ean);
+    } catch (error) {}
+  };
+
   render() {
-    const { classes, children } = this.props;
+    const { classes, products } = this.props;
 
     return (
-      <GridListContainer className={classes.gridContainer}>
-        <div className={classes.gridList}>{children}</div>
-      </GridListContainer>
+      <div className={classes.gridContainer}>
+        <div className={classes.gridList}>
+          {products.map(p => (
+            <ProductTile key={p.ean} onClick={this.handleProductClick} {...p} />
+          ))}
+        </div>
+      </div>
     );
   }
 }

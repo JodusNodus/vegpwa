@@ -8,7 +8,6 @@ import Button from "material-ui/Button";
 import AddIcon from "@material-ui/icons/Add";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
-import ProductTile from "../components/ProductTile";
 import ProductTileGrid from "../components/ProductTileGrid";
 
 import * as navigate from "../../services/navigation";
@@ -112,11 +111,7 @@ class HomeView extends React.Component {
           </Tabs>
         </AppBar>
 
-        <ProductTileGrid>
-          {this.getTabProducts(currentTab).map(p => (
-            <ProductTile key={p.ean} onClick={this.handleProductClick} {...p} />
-          ))}
-        </ProductTileGrid>
+        <ProductTileGrid products={this.getTabProducts(currentTab)} />
 
         <Button
           variant="fab"

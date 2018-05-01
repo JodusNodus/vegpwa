@@ -2,34 +2,19 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { withStyles } from "material-ui/styles";
 import AppBar from "../components/AppBar";
-import Tabs, { Tab } from "material-ui/Tabs";
 import IconButton from "material-ui/IconButton";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import Typography from "material-ui/Typography";
 import Paper from "material-ui/Paper";
 
-import ProductTile from "../components/ProductTile";
 import ProductTileGrid from "../components/ProductTileGrid";
 
 import * as navigate from "../../services/navigation";
 import styles from "./FavoritesView.styles";
 
-const TABTYPE = {
-  new: "nieuw",
-  highestRated: "top",
-  popular: "populair"
-};
-
 @inject("favoritesStore")
 @observer
 class FavoritesView extends React.Component {
-  handleProductClick = event => {
-    try {
-      const ean = parseInt(event.currentTarget.getAttribute("dataean"), 10);
-      navigate.toProduct(ean);
-    } catch (error) {}
-  };
-
   handleCreateProductClick = event => {
     navigate.toCreateProduct();
   };
@@ -59,15 +44,7 @@ class FavoritesView extends React.Component {
             </Typography>
           </Paper>
         ) : (
-          <ProductTileGrid>
-            {favoritesStore.products.map(p => (
-              <ProductTile
-                key={p.ean}
-                onClick={this.handleProductClick}
-                {...p}
-              />
-            ))}
-          </ProductTileGrid>
+          <ProductTileGrid products={favoritesStore.products} />
         )}
       </div>
     );
