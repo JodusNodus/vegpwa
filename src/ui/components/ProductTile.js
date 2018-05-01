@@ -1,7 +1,7 @@
 import React from "react";
 import { withStyles } from "material-ui/styles";
 
-import { GridListTile, GridListTileBar } from "material-ui/GridList";
+import { GridListTileBar } from "material-ui/GridList";
 
 import styles from "./ProductTile.styles";
 

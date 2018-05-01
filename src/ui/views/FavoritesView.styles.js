@@ -4,13 +4,8 @@ export default theme => ({
     display: "flex",
     flexDirection: "column"
   },
-  createProductBtn: {
-    position: "absolute",
+  paper: {
     margin: 20,
-    bottom: 0,
-    right: 0
-  },
-  favoriteBtnIcon: {
-    marginLeft: 7
+    padding: 20
   }
 });

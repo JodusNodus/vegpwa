@@ -9,6 +9,8 @@ import LoginView from "./ui/views/LoginView";
 import HomeView from "./ui/views/HomeView";
 import ProductView from "./ui/views/ProductView";
 import CreateProductView from "./ui/views/CreateProductView";
+import FavoritesView from "./ui/views/FavoritesView";
+
 import Snackbar from "material-ui/Snackbar";
 
 function mapStyles(styles) {
@@ -79,6 +81,7 @@ export default class App extends React.Component {
           <Route path="/home" component={HomeView} />
           <Route path="/product/:ean" component={ProductView} />
           <Route path="/create" component={CreateProductView} />
+          <Route path="/favorites" component={FavoritesView} />
           <Route path="/splash" component={SplashView} />
         </AnimatedSwitch>
 

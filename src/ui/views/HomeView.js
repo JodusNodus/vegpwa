@@ -5,8 +5,8 @@ import AppBar from "../components/AppBar";
 import Tabs, { Tab } from "material-ui/Tabs";
 import Button from "material-ui/Button";
 
-import GridList, { GridListTile, GridListTileBar } from "material-ui/GridList";
 import AddIcon from "@material-ui/icons/Add";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import ProductTile from "../components/ProductTile";
 import ProductTileGrid from "../components/ProductTileGrid";
@@ -85,13 +85,28 @@ class HomeView extends React.Component {
     navigate.toCreateProduct();
   };
 
+  handleFavoritesClick = () => {
+    navigate.toFavorites();
+  };
+
   render() {
     const { classes } = this.props;
     const { currentTab, tabs } = this.state;
 
     return (
       <div className={classes.root}>
-        <AppBar title="Home">
+        <AppBar
+          title="Home"
+          rightButton={
+            <Button
+              onClick={this.handleFavoritesClick}
+              style={{ color: "white" }}
+            >
+              Favorieten
+              <FavoriteIcon className={classes.favoriteBtnIcon} />
+            </Button>
+          }
+        >
           <Tabs value={currentTab} onChange={this.handleChange} scrollable>
             {tabs.map(label => <Tab key={label} label={label} />)}
           </Tabs>
