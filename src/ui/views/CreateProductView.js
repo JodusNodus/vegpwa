@@ -55,18 +55,30 @@ class CreateProductView extends React.Component {
   };
 
   componentDidMount() {
-    this.unblock = navigate.history.block(
-      "Ben je zeker dat je het product niet wilt aanmaken?"
-    );
+    this.block();
+
     this.props.createProductStore.fetchSupermarkets();
     this.props.createProductStore.fetchFormData();
   }
+
+  block = () => {
+    this.blocker = navigate.history.block(
+      "Ben je zeker dat je wilt stoppen met het toevoegen van een product?"
+    );
+  };
+
+  unblock = () => {
+    if (this.blocker) {
+      this.blocker();
+    }
+  };
 
   componentWillUnmount() {
     this.unblock();
   }
 
   handleNext = () => {
+    this.unblock();
     const activeStep = this.state.activeStep + 1;
 
     if (activeStep >= this.state.steps.length) {
@@ -77,16 +89,20 @@ class CreateProductView extends React.Component {
       this.setState({ activeStep });
       navigate.toCreateProduct(activeStep + 1);
     }
+    this.block();
   };
 
   handleBack = () => {
     const activeStep = this.state.activeStep - 1;
-    if (activeStep < 1) {
+    if (activeStep < 0) {
       navigate.toHome();
-      return;
+      this.props.createProductStore.clear();
+    } else {
+      this.unblock();
+      this.setState({ activeStep });
+      navigate.toCreateProduct(activeStep + 1);
+      this.block();
     }
-    this.setState({ activeStep });
-    navigate.toCreateProduct(activeStep + 1);
   };
 
   handleNextSet = handleNext => {
