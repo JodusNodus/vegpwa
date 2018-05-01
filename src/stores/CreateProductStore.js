@@ -46,6 +46,10 @@ export default class CreateProductStore {
     this.productName = name;
   }
 
+  isFormComplete() {
+    return this.brandname.length > 1 && this.productName.length > 3;
+  }
+
   checkAlreadyExists = flow(function*() {
     try {
       const product = yield api.fetchProduct(this.ean);
@@ -73,7 +77,8 @@ export default class CreateProductStore {
       } = yield api.uploadProductPicture(this.ean, file);
 
       this.labelSuggestions = labelSuggestions;
-      this.brandname = brandSuggestions[0] || "";
+      this.brandname =
+        brandSuggestions.length > 0 ? brandSuggestions[0].name : "";
 
       setTimeout(this.pictureIsUploaded, 1000);
     } catch (error) {
@@ -104,15 +109,23 @@ export default class CreateProductStore {
 
   @action.bound
   addLabel(label) {
+    this.removeLabel(label);
     this.productLabels.push(label);
   }
 
   @action.bound
   removeLabel(label) {
     const i = this.productLabels.indexOf(label);
-
     if (i > -1) {
       this.productLabels.splice(i, 1);
+    }
+  }
+
+  @action.bound
+  removeLabelSuggestion(label) {
+    const i = this.labelSuggestions.indexOf(label);
+    if (i > -1) {
+      this.labelSuggestions.splice(i, 1);
     }
   }
 }

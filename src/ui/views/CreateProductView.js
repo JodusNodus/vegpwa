@@ -15,6 +15,7 @@ import BarcodeScannerView from "./BarcodeScannerView";
 import ProductPictureView from "./ProductPictureView";
 import ProductFormView from "./ProductFormView";
 import SupermarketPickerView from "./SupermarketPickerView";
+import LabelPickerView from "./LabelPickerView";
 
 import * as navigate from "../../services/navigation";
 import styles from "./CreateProductView.styles";
@@ -42,13 +43,13 @@ class CreateProductView extends React.Component {
       },
       {
         label: "Vul naam en merk in",
-        isDone: () => true,
+        isDone: props => props.createProductStore.isFormComplete(),
         Component: ProductFormView
       },
       {
         label: "Voeg labels toe",
-        isDone: () => true,
-        Component: ProductFormView
+        isDone: props => props.createProductStore.productLabels.length > 0,
+        Component: LabelPickerView
       }
     ]
   };

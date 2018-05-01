@@ -125,7 +125,16 @@ class IntegrationAutosuggest extends React.Component {
   };
 
   render() {
-    const { classes, label, value, onChange, className } = this.props;
+    const {
+      classes,
+      label,
+      value,
+      onChange,
+      className,
+      endAdornment,
+      onKeyPress,
+      onSuggestionSelected
+    } = this.props;
 
     return (
       <div className={className}>
@@ -140,11 +149,13 @@ class IntegrationAutosuggest extends React.Component {
           suggestions={this.state.suggestions}
           onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-          onSuggestionSelected={this.handleSuggestionSelected}
+          onSuggestionSelected={onSuggestionSelected}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           renderSuggestionsContainer={renderSuggestionsContainer}
           inputProps={{
+            onKeyPress,
+            endAdornment,
             classes,
             label,
             value,

@@ -26,11 +26,15 @@ class ProductPaperLayout extends React.Component {
           ) : (
             undefined
           )}
-          <img
-            src={imageSrc}
-            alt="product image"
-            className={classes.coverPicture}
-          />
+          {imageSrc ? (
+            <img
+              src={imageSrc}
+              alt="product image"
+              className={classes.coverPicture}
+            />
+          ) : (
+            undefined
+          )}
           <div className={classes.coverOverlay} />
         </div>
         <Paper elevation={4} className={classes.paper}>

@@ -7,6 +7,7 @@ export default theme => ({
     alignItems: "center"
   },
   paper: {
+    width: 290,
     padding: 15,
     margin: 10
   },

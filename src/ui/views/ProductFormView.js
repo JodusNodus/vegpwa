@@ -12,7 +12,6 @@ import Paper from "material-ui/Paper";
 import Typography from "material-ui/Typography";
 import Button from "material-ui/Button";
 import IconButton from "material-ui/IconButton";
-import Chip from "material-ui/Chip";
 import _ from "lodash";
 
 import ProductPaperLayout from "../components/ProductPaperLayout";
@@ -26,9 +25,6 @@ import AutoCompleteTextField from "../components/AutoCompleteTextField";
 @observer
 class ProductFormView extends React.Component {
   state = {
-    fields: {
-      labelField: ""
-    },
     errors: {}
   };
 
@@ -38,11 +34,7 @@ class ProductFormView extends React.Component {
   }
 
   handleNext = () => {
-    const {
-      productLabels,
-      brandname,
-      productName
-    } = this.props.createProductStore;
+    const { brandname, productName } = this.props.createProductStore;
     const errors = {};
 
     if (productName.length < 3) {
@@ -51,10 +43,6 @@ class ProductFormView extends React.Component {
 
     if (brandname.length < 3) {
       errors.brandname = "Too short";
-    }
-
-    if (productLabels.length < 1) {
-      errors.productLabels = "Minstens 1 label";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -66,7 +54,10 @@ class ProductFormView extends React.Component {
   };
 
   handleFieldChange = stateKey => event => {
-    const fields = { ...this.state.fields, [stateKey]: event.target.value };
+    const fields = {
+      ...this.state.fields,
+      [stateKey]: event.target.value.toLowerCase()
+    };
     this.setState({ fields });
   };
 
@@ -84,7 +75,7 @@ class ProductFormView extends React.Component {
             createProductStore.pictureUploaded
               ? `https://storage.googleapis.com/vegstorage/cover-${
                   createProductStore.ean
-                }`
+                }?date=${Date.now()}`
               : undefined
           }
         >
@@ -107,26 +98,6 @@ class ProductFormView extends React.Component {
             error={!!errors.productName}
             value={createProductStore.productName}
           />
-
-          {
-            // <div>
-            //   {createProductStore.productLabels.map((label, i) => (
-            //     <Chip
-            //       key={i}
-            //       label={label}
-            //       onDelete={() => createProductStore.removeLabel(label)}
-            //       className={classes.chip}
-            //     />
-            //   ))}
-            // </div>
-            // <AutoCompleteTextField
-            //   label="Labels"
-            //   options={createProductStore.productLabels}
-            //   className={classes.input}
-            //   onChange={this.handleFieldChange("labelField")}
-            //   value={fields.labelField}
-            // />
-          }
         </ProductPaperLayout>
       </div>
     );
