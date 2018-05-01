@@ -7,6 +7,7 @@ import HomeStore from "./HomeStore";
 import ProductStore from "./ProductStore";
 import FavoritesStore from "./FavoritesStore";
 import CreateProductStore from "./CreateProductStore";
+import ConnectionStore from "./ConnectionStore";
 
 configure({ enforceActions: true });
 
@@ -21,6 +22,7 @@ stores.homeStore = new HomeStore(stores);
 stores.productStore = new ProductStore(stores);
 stores.favoritesStore = new FavoritesStore(stores);
 stores.createProductStore = new CreateProductStore(stores);
+stores.connectionStore = new ConnectionStore(stores);
 
 export default stores;
 

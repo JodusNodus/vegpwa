@@ -7,15 +7,19 @@ import "./index.css";
 import App from "./App";
 
 import { Router } from "react-router-dom";
-import { history } from "./services/navigation";
+import * as navigate from "./services/navigation";
 import stores, { hydrateStores } from "./stores/index";
 import registerServiceWorker from "./registerServiceWorker";
 
-stores.userStore.login();
+if (stores.connectionStore.onLine) {
+  stores.userStore.login();
+} else {
+  navigate.toFavorites();
+}
 
 ReactDOM.render(
   <Provider {...stores}>
-    <Router history={history}>
+    <Router history={navigate.history}>
       <App />
     </Router>
   </Provider>,
