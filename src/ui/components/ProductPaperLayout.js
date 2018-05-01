@@ -5,7 +5,6 @@ import IconButton from "material-ui/IconButton";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import Typography from "material-ui/Typography";
 
-import * as navigate from "../../services/navigation";
 import styles from "./ProductPaperLayout.styles";
 
 class ProductPaperLayout extends React.Component {
@@ -29,7 +28,7 @@ class ProductPaperLayout extends React.Component {
           {imageSrc ? (
             <img
               src={imageSrc}
-              alt="product image"
+              alt="product"
               className={classes.coverPicture}
             />
           ) : (

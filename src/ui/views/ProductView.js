@@ -1,13 +1,10 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withStyles } from "material-ui/styles";
-import AppBar from "../components/AppBar";
 import StarRating from "../components/StarRating";
 import Typography from "material-ui/Typography";
 import Button from "material-ui/Button";
-import Grid from "material-ui/Grid";
 import Chip from "material-ui/Chip";
-import Paper from "material-ui/Paper";
 import Avatar from "material-ui/Avatar";
 import List, { ListItem, ListItemText } from "material-ui/List";
 import StoreIcon from "@material-ui/icons/Store";
@@ -30,7 +27,7 @@ class ProductView extends React.Component {
 
   componentDidMount() {
     const { match, productStore } = this.props;
-    const ean = parseInt(match.params.ean);
+    const ean = parseInt(match.params.ean, 10);
     productStore.fetchProduct(ean);
   }
 

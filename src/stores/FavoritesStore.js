@@ -1,9 +1,7 @@
-import { observable, action, computed } from "mobx";
+import { observable, action } from "mobx";
 import { persist } from "mobx-persist";
 
 import { find, findIndex } from "lodash";
-import * as navigate from "../services/navigation";
-import * as api from "../services/vegapi";
 
 export default class FavoritesStore {
   @persist("list")

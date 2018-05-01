@@ -4,21 +4,10 @@ import { inject, observer } from "mobx-react";
 import styles from "./ProductFormView.styles";
 
 import { withStyles } from "material-ui/styles";
-import { InputAdornment } from "material-ui/Input";
-import { FormControl } from "material-ui/Form";
 import TextField from "material-ui/TextField";
-import Grid from "material-ui/Grid";
-import Paper from "material-ui/Paper";
-import Typography from "material-ui/Typography";
-import Button from "material-ui/Button";
-import IconButton from "material-ui/IconButton";
-import _ from "lodash";
 
 import ProductPaperLayout from "../components/ProductPaperLayout";
 
-import EmailIcon from "@material-ui/icons/Email";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import AutoCompleteTextField from "../components/AutoCompleteTextField";
 
 @inject("createProductStore")
@@ -53,17 +42,9 @@ class ProductFormView extends React.Component {
     }
   };
 
-  handleFieldChange = stateKey => event => {
-    const fields = {
-      ...this.state.fields,
-      [stateKey]: event.target.value.toLowerCase()
-    };
-    this.setState({ fields });
-  };
-
   render() {
     const { classes, createProductStore } = this.props;
-    const { fields, errors, showPassword } = this.state;
+    const { errors } = this.state;
 
     return (
       <div className={classes.root}>
@@ -71,13 +52,7 @@ class ProductFormView extends React.Component {
           title={
             createProductStore.brandname + " " + createProductStore.productName
           }
-          imageSrc={
-            createProductStore.pictureUploaded
-              ? `https://storage.googleapis.com/vegstorage/cover-${
-                  createProductStore.ean
-                }?date=${Date.now()}`
-              : undefined
-          }
+          imageSrc={createProductStore.coverPicture}
         >
           <AutoCompleteTextField
             label="Merk"

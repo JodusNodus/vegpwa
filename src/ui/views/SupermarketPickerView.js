@@ -8,7 +8,6 @@ import Grid from "material-ui/Grid";
 import Paper from "material-ui/Paper";
 import Avatar from "material-ui/Avatar";
 import List, { ListItem, ListItemText } from "material-ui/List";
-import _ from "lodash";
 
 import StoreIcon from "@material-ui/icons/Store";
 

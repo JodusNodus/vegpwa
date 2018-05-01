@@ -1,7 +1,6 @@
 import { observable, flow, computed } from "mobx";
 
 import moment from "moment";
-import * as navigate from "../services/navigation";
 import * as api from "../services/vegapi";
 
 export default class ProductStore {

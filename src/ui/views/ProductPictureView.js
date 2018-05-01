@@ -1,7 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { withStyles } from "material-ui/styles";
-import Paper from "material-ui/Paper";
 import Icon from "material-ui/Icon";
 import Button from "material-ui/Button";
 
@@ -24,7 +23,7 @@ class ProductPictureView extends React.Component {
   }
 
   handleNext = () => {
-    const dataUrl = this.cropperRef.current.getCroppedCanvas().toBlob(blob => {
+    this.cropperRef.current.getCroppedCanvas().toBlob(blob => {
       this.props.createProductStore.uploadPicture(blob);
     }, "image/jpeg");
     return true;
@@ -43,7 +42,7 @@ class ProductPictureView extends React.Component {
   };
 
   render() {
-    const { classes, createProductStore } = this.props;
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>

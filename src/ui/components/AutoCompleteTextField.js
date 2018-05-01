@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Autosuggest from "react-autosuggest";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
@@ -129,7 +128,6 @@ class IntegrationAutosuggest extends React.Component {
       classes,
       label,
       value,
-      onChange,
       className,
       endAdornment,
       onKeyPress,

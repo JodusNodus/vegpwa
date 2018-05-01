@@ -43,6 +43,8 @@ class LabelPickerView extends React.Component {
       case "Enter":
         this.handleAdd();
         break;
+      default:
+        break;
     }
   };
 
@@ -70,7 +72,7 @@ class LabelPickerView extends React.Component {
           ) : (
             createProductStore.productLabels.map((label, i) => (
               <Chip
-                key={i}
+                key={label}
                 label={label}
                 onDelete={() => createProductStore.removeLabel(label)}
                 className={classes.chip}
@@ -113,7 +115,7 @@ class LabelPickerView extends React.Component {
             </Typography>
             {createProductStore.labelSuggestions.map((label, i) => (
               <Chip
-                key={i}
+                key={label}
                 label={label}
                 className={classes.chip}
                 onClick={() => this.handleSuggestionLabelAdd(label)}

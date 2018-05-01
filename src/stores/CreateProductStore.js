@@ -1,6 +1,6 @@
-import { observable, action, computed, flow } from "mobx";
+import { observable, action, flow, toJS } from "mobx";
 
-import { find, findIndex } from "lodash";
+import _ from "lodash";
 import * as navigate from "../services/navigation";
 import * as api from "../services/vegapi";
 
@@ -13,6 +13,7 @@ export default class CreateProductStore {
   @observable brandname = "";
   @observable placeid = null;
 
+  @observable coverPicture = null;
   @observable alreadyExists = false;
   @observable pictureTaken = false;
   @observable pictureUploaded = false;
@@ -65,22 +66,40 @@ export default class CreateProductStore {
   });
 
   @action.bound
-  pictureIsUploaded() {
-    this.pictureUploaded = true;
+  addLabel(label) {
+    this.removeLabel(label);
+    this.productLabels.push(label);
   }
 
-  uploadPicture = flow(function*(file) {
+  @action.bound
+  removeLabel(label) {
+    const i = this.productLabels.indexOf(label);
+    if (i > -1) {
+      this.productLabels.splice(i, 1);
+    }
+  }
+
+  @action.bound
+  removeLabelSuggestion(label) {
+    const i = this.labelSuggestions.indexOf(label);
+    if (i > -1) {
+      this.labelSuggestions.splice(i, 1);
+    }
+  }
+
+  uploadPicture = flow(function*(blob) {
     try {
       const {
         labelSuggestions,
         brandSuggestions
-      } = yield api.uploadProductPicture(this.ean, file);
+      } = yield api.uploadProductPicture(this.ean, blob);
+      this.coverPicture = URL.createObjectURL(blob);
 
-      this.labelSuggestions = labelSuggestions;
+      this.labelSuggestions = _.uniq(labelSuggestions);
       this.brandname =
         brandSuggestions.length > 0 ? brandSuggestions[0].name : "";
 
-      setTimeout(this.pictureIsUploaded, 1000);
+      this.pictureUploaded = true;
     } catch (error) {
       console.error(error);
       this.pictureUploaded = false;
@@ -107,25 +126,38 @@ export default class CreateProductStore {
     }
   });
 
-  @action.bound
-  addLabel(label) {
-    this.removeLabel(label);
-    this.productLabels.push(label);
-  }
+  createProduct = flow(function*() {
+    try {
+      navigate.toSplash();
+      const product = {
+        ean: this.ean,
+        labels: toJS(this.productLabels),
+        name: this.productName,
+        brandname: this.brandname,
+        placeid: this.placeid
+      };
+      yield api.createProduct(product);
+      navigate.toProduct(this.ean);
+    } catch (error) {
+      console.error(error);
+    }
+    this.clear();
+  });
 
   @action.bound
-  removeLabel(label) {
-    const i = this.productLabels.indexOf(label);
-    if (i > -1) {
-      this.productLabels.splice(i, 1);
-    }
-  }
+  clear() {
+    this.ean = -1;
+    this.productLabels = [];
+    this.productName = "";
+    this.brandname = "";
+    this.placeid = null;
 
-  @action.bound
-  removeLabelSuggestion(label) {
-    const i = this.labelSuggestions.indexOf(label);
-    if (i > -1) {
-      this.labelSuggestions.splice(i, 1);
-    }
+    this.alreadyExists = false;
+    this.pictureTaken = false;
+    this.pictureUploaded = false;
+    this.labels = [];
+    this.labelSuggestions = [];
+    this.brands = [];
+    this.supermarkets = [];
   }
 }

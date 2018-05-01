@@ -11,8 +11,7 @@ import CreateProductView from "./ui/views/CreateProductView";
 
 function mapStyles(styles) {
   return {
-    opacity: styles.opacity,
-    top: styles.x + "%"
+    opacity: styles.opacity
   };
 }
 
@@ -24,16 +23,13 @@ const bounce = val =>
 
 const bounceTransition = {
   atEnter: {
-    opacity: 0,
-    x: 100
+    opacity: 0
   },
   atLeave: {
-    opacity: bounce(0),
-    x: bounce(100)
+    opacity: bounce(0)
   },
   atActive: {
-    opacity: bounce(1),
-    x: bounce(0)
+    opacity: bounce(1)
   }
 };
 

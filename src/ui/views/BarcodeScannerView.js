@@ -44,7 +44,7 @@ class BarcodeScannerView extends React.Component {
       barcode: value
     });
     if (value.length === 13) {
-      this.props.createProductStore.setEan(parseInt(value));
+      this.props.createProductStore.setEan(parseInt(value, 10));
     } else {
       this.props.createProductStore.setEan(-1);
     }
@@ -57,7 +57,7 @@ class BarcodeScannerView extends React.Component {
     return (
       <div className={classes.root}>
         <Paper elevation={3} className={classes.paper}>
-          <img src={ean13Image} className={classes.barcodeImg} />
+          <img src={ean13Image} className={classes.barcodeImg} alt="barcode" />
           <TextField
             value={barcode}
             onChange={this.handleChange}

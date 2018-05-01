@@ -3,7 +3,7 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { withStyles } from "material-ui/styles";
 
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import MobileStepper from "material-ui/MobileStepper";
 import Button from "material-ui/Button";
 import Paper from "material-ui/Paper";
@@ -28,7 +28,7 @@ class CreateProductView extends React.Component {
     steps: [
       {
         label: "Voer de barcode in",
-        isDone: props => props.createProductStore.ean != -1,
+        isDone: props => props.createProductStore.ean !== -1,
         Component: BarcodeScannerView
       },
       {
@@ -62,18 +62,22 @@ class CreateProductView extends React.Component {
   handleNext = () => {
     const activeStep = this.state.activeStep + 1;
 
-    if (activeStep > this.state.steps) {
-      // done
-    } else {
-      if (this.handleRouteNext()) {
-        this.setState({ activeStep });
-        navigate.toCreateProduct(activeStep + 1);
-      }
+    if (activeStep >= this.state.steps.length) {
+      this.props.createProductStore.createProduct();
+      return;
+    }
+    if (this.handleRouteNext()) {
+      this.setState({ activeStep });
+      navigate.toCreateProduct(activeStep + 1);
     }
   };
 
   handleBack = () => {
     const activeStep = this.state.activeStep - 1;
+    if (activeStep < 1) {
+      navigate.toHome();
+      return;
+    }
     this.setState({ activeStep });
     navigate.toCreateProduct(activeStep + 1);
   };
@@ -83,7 +87,7 @@ class CreateProductView extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     const { activeStep, steps } = this.state;
 
     return (
@@ -116,21 +120,14 @@ class CreateProductView extends React.Component {
             <Button
               size="small"
               onClick={this.handleNext}
-              disabled={
-                activeStep >= steps.length ||
-                !steps[activeStep].isDone(this.props)
-              }
+              disabled={!steps[activeStep].isDone(this.props)}
             >
               Volgende
               <KeyboardArrowRight />
             </Button>
           }
           backButton={
-            <Button
-              size="small"
-              onClick={this.handleBack}
-              disabled={activeStep === 0}
-            >
+            <Button size="small" onClick={this.handleBack}>
               <KeyboardArrowLeft />
               Terug
             </Button>
