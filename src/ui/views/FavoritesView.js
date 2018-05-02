@@ -44,7 +44,7 @@ class FavoritesView extends React.Component {
             </Typography>
           </Paper>
         ) : (
-          <ProductTileGrid products={favoritesStore.products} />
+          <ProductTileGrid products={favoritesStore.products} favorites />
         )}
       </div>
     );

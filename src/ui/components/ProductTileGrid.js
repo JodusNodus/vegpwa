@@ -16,13 +16,18 @@ class ProductTileGrid extends React.Component {
   };
 
   render() {
-    const { classes, products } = this.props;
+    const { classes, products, favorites = false } = this.props;
 
     return (
       <div className={classes.gridContainer}>
         <div className={classes.gridList}>
           {products.map(p => (
-            <ProductTile key={p.ean} onClick={this.handleProductClick} {...p} />
+            <ProductTile
+              favorite={favorites}
+              key={p.ean}
+              onClick={this.handleProductClick}
+              {...p}
+            />
           ))}
         </div>
       </div>
