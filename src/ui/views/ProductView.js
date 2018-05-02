@@ -75,8 +75,8 @@ class ProductView extends React.Component {
     if (!productStore.product) {
       return <div className={classes.root} />;
     }
-    const isFavorite = favoritesStore.isFavorite(product.ean);
     const { product } = productStore;
+    const isFavorite = favoritesStore.isFavorite(product.ean);
 
     return (
       <div className={classes.root}>
