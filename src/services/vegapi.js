@@ -1,4 +1,3 @@
-import queryString from "query-string";
 import { VEGAPI_URL } from "../constants";
 
 async function req(path = "/", method = "GET", body) {
@@ -52,8 +51,17 @@ export async function updateLocation({ lat, lng }) {
   await req("/api/location", "POST", { lat, lng });
 }
 
+const querify = function(obj) {
+  const str = [];
+  for (var p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    }
+  return str.join("&");
+};
+
 export async function fetchProducts(options) {
-  const query = queryString.stringify(options);
+  const query = querify(options);
   return await req("/api/products?" + query);
 }
 

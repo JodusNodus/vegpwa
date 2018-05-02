@@ -10,7 +10,6 @@ export default class HomeStore {
   fetchNewProducts = flow(function*() {
     if (this.newProducts.length) return;
     const { products } = yield api.fetchProducts({ orderby: "creationdate" });
-    console.log(products);
     this.newProducts.replace(products);
   });
 

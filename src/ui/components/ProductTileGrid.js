@@ -2,7 +2,6 @@ import React from "react";
 import { observer } from "mobx-react";
 import { withStyles } from "material-ui/styles";
 import styles from "./ProductTileGrid.styles";
-import sizeMe from "react-sizeme";
 
 import * as navigate from "../../services/navigation";
 import ProductTile from "./ProductTile";
