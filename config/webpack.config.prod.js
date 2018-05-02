@@ -310,7 +310,12 @@ module.exports = {
         }
         console.log(message);
       },
-      staticFileGlobs: ["https://storage.googleapis.com/vegstorage/cover-*"],
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/storage.googleapis.com\/vegstorage\/cover-.*/,
+          handler: "cacheFirst"
+        }
+      ],
       minify: true,
       // For unknown URLs, fallback to the index page
       navigateFallback: publicUrl + "/index.html",
