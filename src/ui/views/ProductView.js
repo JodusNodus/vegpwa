@@ -75,6 +75,7 @@ class ProductView extends React.Component {
     if (!productStore.product) {
       return <div className={classes.root} />;
     }
+    const isFavorite = favoritesStore.isFavorite(product.ean);
     const { product } = productStore;
 
     return (
@@ -82,7 +83,7 @@ class ProductView extends React.Component {
         <ProductPaperLayout
           title={productStore.displayName}
           onBack={this.handleBackBtn}
-          imageSrc={product.coverPicture}
+          imageSrc={product.coverPicture + "?cache=" + (isFavorite ? 1 : 0)}
         >
           <Button
             variant="fab"
@@ -91,11 +92,7 @@ class ProductView extends React.Component {
             className={classes.favoriteBtn}
             onClick={this.handleFavoriteBtn}
           >
-            {favoritesStore.isFavorite(product.ean) ? (
-              <FavoriteBorderIcon />
-            ) : (
-              <FavoriteIcon />
-            )}
+            {isFavorite ? <FavoriteBorderIcon /> : <FavoriteIcon />}
           </Button>
 
           <Typography variant="body1" className={classes.item}>
