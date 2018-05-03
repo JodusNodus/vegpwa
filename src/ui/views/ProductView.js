@@ -22,14 +22,19 @@ import styles from "./ProductView.styles";
 @observer
 class ProductView extends React.Component {
   state = {
+    ean: null,
     snackBarText: null
   };
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     const { match, productStore } = this.props;
     const ean = parseInt(match.params.ean, 10);
     productStore.fetchProduct(ean);
+    this.state.ean = ean;
   }
+
+  componentDidMount() {}
 
   handleBackBtn = () => {
     navigate.goBack();
@@ -49,6 +54,11 @@ class ProductView extends React.Component {
   handleFavoriteBtn = () => {
     if (this.toggleFavorite()) {
       this.setState({ snackBarText: "Toegevoegd aan favorieten" });
+      fetch(this.props.productStore.product.thumbPicture + "?cache=1", {
+        mode: "no-cors"
+      })
+        .then(() => console.log("image cached"))
+        .catch(console.error);
     } else {
       this.setState({ snackBarText: "Verwijderd uit favorieten" });
     }
@@ -71,24 +81,27 @@ class ProductView extends React.Component {
 
   render() {
     const { classes, productStore, favoritesStore } = this.props;
+    const { ean } = this.state;
+    const isFavorite = favoritesStore.isFavorite(ean);
 
-    if (!productStore.product) {
-      return <div className={classes.root} />;
-    }
     const { product } = productStore;
-    const isFavorite = favoritesStore.isFavorite(product.ean);
+
+    const imageSrc = product.coverPicture
+      ? product.coverPicture + "?cache=" + (isFavorite ? 1 : 0)
+      : "";
 
     return (
       <div className={classes.root}>
         <ProductPaperLayout
           title={productStore.displayName}
           onBack={this.handleBackBtn}
-          imageSrc={product.coverPicture + "?cache=" + (isFavorite ? 1 : 0)}
+          imageSrc={imageSrc}
         >
           <Button
             variant="fab"
             color="secondary"
             aria-label="favorite"
+            disabled={!product.ean}
             className={classes.favoriteBtn}
             onClick={this.handleFavoriteBtn}
           >
@@ -96,7 +109,7 @@ class ProductView extends React.Component {
           </Button>
 
           <Typography variant="body1" className={classes.item}>
-            Geplaatst door {product.user.firstname} op{" "}
+            Geplaatst door {productStore.userName} op{" "}
             {productStore.creationDateString}
           </Typography>
 
