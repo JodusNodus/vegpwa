@@ -1,6 +1,7 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 
+import { MuiThemeProvider } from "material-ui/styles";
 import { spring, AnimatedSwitch } from "react-router-transition";
 import { Route } from "react-router-dom";
 
@@ -10,6 +11,8 @@ import HomeView from "./ui/views/HomeView";
 import ProductView from "./ui/views/ProductView";
 import CreateProductView from "./ui/views/CreateProductView";
 import FavoritesView from "./ui/views/FavoritesView";
+
+import theme from "./ui/theme";
 
 import Snackbar from "material-ui/Snackbar";
 
@@ -70,22 +73,24 @@ export default class App extends React.Component {
   render() {
     return (
       <div style={styles.root}>
-        <AnimatedSwitch
-          atEnter={bounceTransition.atEnter}
-          atLeave={bounceTransition.atLeave}
-          atActive={bounceTransition.atActive}
-          mapStyles={mapStyles}
-          className="switch-wrapper"
-        >
-          <Route path="/signup" component={LoginView} />
-          <Route path="/home" component={HomeView} />
-          <Route path="/product/:ean" component={ProductView} />
-          <Route path="/create" component={CreateProductView} />
-          <Route path="/favorites" component={FavoritesView} />
-          <Route path="/splash" component={SplashView} />
-        </AnimatedSwitch>
+        <MuiThemeProvider theme={theme}>
+          <AnimatedSwitch
+            atEnter={bounceTransition.atEnter}
+            atLeave={bounceTransition.atLeave}
+            atActive={bounceTransition.atActive}
+            mapStyles={mapStyles}
+            className="switch-wrapper"
+          >
+            <Route path="/signup" component={LoginView} />
+            <Route path="/home" component={HomeView} />
+            <Route path="/product/:ean" component={ProductView} />
+            <Route path="/create" component={CreateProductView} />
+            <Route path="/favorites" component={FavoritesView} />
+            <Route path="/splash" component={SplashView} />
+          </AnimatedSwitch>
 
-        <ConnectionSnackBar />
+          <ConnectionSnackBar />
+        </MuiThemeProvider>
       </div>
     );
   }

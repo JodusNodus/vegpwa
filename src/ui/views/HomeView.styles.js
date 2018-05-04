@@ -8,9 +8,11 @@ export default theme => ({
     position: "absolute",
     margin: 20,
     bottom: 0,
-    right: 0
+    right: 0,
+    color: "white"
   },
   favoriteBtnIcon: {
-    marginLeft: 7
+    marginLeft: 7,
+    color: "white"
   }
 });

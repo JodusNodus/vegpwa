@@ -11,6 +11,7 @@ export default theme => ({
     position: "absolute",
     top: 0,
     transform: "translateY(-50%)",
+    color: "white",
     right: 20
   },
   labelsContainer: {
