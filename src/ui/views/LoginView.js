@@ -1,16 +1,19 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
+import { STATE } from "../../constants";
 
 import styles from "./LoginView.styles";
 
 import { withStyles } from "material-ui/styles";
 import { InputAdornment } from "material-ui/Input";
+import Snackbar from "material-ui/Snackbar";
 import TextField from "material-ui/TextField";
 import Paper from "material-ui/Paper";
 import Typography from "material-ui/Typography";
 import Button from "material-ui/Button";
 import IconButton from "material-ui/IconButton";
 
+import SplashView from "./SplashView";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
@@ -28,20 +31,22 @@ class LoginView extends React.Component {
       password: ""
     },
     errors: {},
+    loginForm: true,
     showPassword: false
   };
 
   componentDidMount() {}
 
   handleSignupClick = () => {
-    const { firstname, lastname, email, password } = this.state.fields;
+    const { fields, loginForm } = this.state;
+    const { firstname, lastname, email, password } = fields;
     const errors = {};
 
-    if (firstname.length < 3) {
+    if (!loginForm && firstname.length < 3) {
       errors.firstname = "Too short";
     }
 
-    if (lastname.length < 3) {
+    if (!loginForm && lastname.length < 3) {
       errors.lastname = "Too short";
     }
 
@@ -55,6 +60,8 @@ class LoginView extends React.Component {
 
     if (Object.keys(errors).length > 0) {
       this.setState({ errors });
+    } else if (loginForm) {
+      this.props.userStore.login(this.state.fields);
     } else {
       this.props.userStore.signup(this.state.fields);
     }
@@ -69,33 +76,41 @@ class LoginView extends React.Component {
     this.setState({ showPassword: !this.state.showPassword });
   };
 
+  handleLoginToggle = () => {
+    this.setState({ loginForm: !this.state.loginForm });
+  };
+
   render() {
-    const { classes } = this.props;
-    const { fields, errors, showPassword } = this.state;
+    const { classes, userStore } = this.props;
+    const { fields, errors, showPassword, loginForm } = this.state;
+
     return (
       <div className={classes.root}>
         <Paper elevation={4} className={classes.paper}>
           <Typography variant="headline" component="h3">
-            Account aanmaken
+            {loginForm ? "Inloggen" : "Account aanmaken"}
           </Typography>
 
-          <TextField
-            label="Voornaam"
-            className={classes.input}
-            onChange={this.handleFieldChange("firstname")}
-            error={!!errors.firstname}
-            value={fields.firstname}
-            fullWidth
-          />
-
-          <TextField
-            label="Achternaam"
-            className={classes.input}
-            onChange={this.handleFieldChange("lastname")}
-            error={!!errors.lastname}
-            value={fields.lastname}
-            fullWidth
-          />
+          {!loginForm && (
+            <TextField
+              label="Voornaam"
+              className={classes.input}
+              onChange={this.handleFieldChange("firstname")}
+              error={!!errors.firstname}
+              value={fields.firstname}
+              fullWidth
+            />
+          )}
+          {!loginForm && (
+            <TextField
+              label="Achternaam"
+              className={classes.input}
+              onChange={this.handleFieldChange("lastname")}
+              error={!!errors.lastname}
+              value={fields.lastname}
+              fullWidth
+            />
+          )}
 
           <TextField
             fullWidth
@@ -134,16 +149,37 @@ class LoginView extends React.Component {
           />
 
           <div className={classes.btnContainer}>
+            <Button className={classes.btn} onClick={this.handleLoginToggle}>
+              {loginForm ? "Niet geregistreerd" : "Al geregistreerd"}
+            </Button>
+
             <Button
               variant="raised"
               color="primary"
               className={classes.btn}
               onClick={this.handleSignupClick}
             >
-              Signup
+              {loginForm ? "Login" : "Registreren"}
             </Button>
           </div>
         </Paper>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          open={userStore.loginState === STATE.error}
+          autoHideDuration={5000}
+          SnackbarContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          message={
+            <span id="message-id">
+              {loginForm ? "Login incorrect" : "Registratie mislukt"}
+            </span>
+          }
+        />
       </div>
     );
   }

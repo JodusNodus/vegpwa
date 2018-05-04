@@ -16,7 +16,7 @@ export default class UserStore {
   @observable loginState = STATE.pending;
   @observable locationState = STATE.pending;
 
-  login = flow(function*() {
+  tryLogin = flow(function*() {
     navigate.toSplash();
     this.loginState = STATE.pending;
     this.locationState = STATE.pending;
@@ -31,6 +31,30 @@ export default class UserStore {
       this.locationState = STATE.error;
 
       navigate.toSignup();
+    }
+  });
+
+  login = flow(function*(userLoginForm) {
+    this.loginState = STATE.pending;
+
+    const user = yield api.login(userLoginForm);
+
+    if (!user) {
+      this.loginState = STATE.error;
+      return;
+    }
+
+    this.user = user;
+    this.loginState = STATE.done;
+
+    this.locationState = STATE.pending;
+    try {
+      yield updateLocation();
+      this.locationState = STATE.done;
+
+      navigate.toHome();
+    } catch (error) {
+      this.locationState = STATE.error;
     }
   });
 

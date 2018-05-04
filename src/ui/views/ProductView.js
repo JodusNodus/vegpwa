@@ -156,8 +156,8 @@ class ProductView extends React.Component {
             className={classes.item}
           >
             {product.supermarkets.length < 1
-              ? "Nog niet toegevoegd aan lokale supermarkten"
-              : "Verkrijgbaar in"}
+              ? "Nog niet toegevoegd aan supermarkten in jouw buurt"
+              : "Verkrijgbaar in jouw buurt bij"}
           </Typography>
 
           <List>

@@ -14,10 +14,10 @@ export default theme => ({
     marginTop: 10
   },
   btnContainer: {
+    marginTop: 20,
     display: "flex",
-    flexDirection: "row-reverse"
+    justifyContent: "space-between",
+    flexDirection: "row"
   },
-  btn: {
-    marginTop: 20
-  }
+  btn: {}
 });

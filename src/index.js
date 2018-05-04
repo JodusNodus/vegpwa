@@ -12,7 +12,7 @@ import stores, { hydrateStores } from "./stores/index";
 import registerServiceWorker from "./registerServiceWorker";
 
 if (stores.connectionStore.onLine) {
-  stores.userStore.login();
+  stores.userStore.tryLogin();
 } else {
   navigate.toFavorites();
 }
