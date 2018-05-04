@@ -36,6 +36,7 @@ class BarcodeScannerView extends React.Component {
   }
 
   handleNext = () => {
+    this.props.createProductStore.checkAlreadyExists();
     return true;
   };
 

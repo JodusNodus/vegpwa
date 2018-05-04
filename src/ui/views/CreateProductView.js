@@ -77,11 +77,20 @@ class CreateProductView extends React.Component {
     this.unblock();
   }
 
+  getSteps = () => {
+    const { createProductStore } = this.props;
+    let { steps } = this.state;
+    if (createProductStore.alreadyExists) {
+      steps = steps.slice(0, 2);
+    }
+    return steps;
+  };
+
   handleNext = () => {
     this.unblock();
     const activeStep = this.state.activeStep + 1;
 
-    if (activeStep >= this.state.steps.length) {
+    if (activeStep >= this.getSteps().length) {
       this.props.createProductStore.createProduct();
       return;
     }
@@ -110,19 +119,20 @@ class CreateProductView extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { activeStep, steps } = this.state;
+    const { classes, createProductStore } = this.props;
+    let { activeStep } = this.state;
 
     return (
       <div className={classes.root}>
         <Paper square elevation={0} className={classes.header}>
           <Typography>
-            Stap {activeStep + 1} van {steps.length}: {steps[activeStep].label}
+            Stap {activeStep + 1} van {this.getSteps().length}:{" "}
+            {this.getSteps()[activeStep].label}
           </Typography>
         </Paper>
         <div className={classes.screenContainer}>
           <Switch>
-            {steps.map(({ Component }, i) => (
+            {this.getSteps().map(({ Component }, i) => (
               <Route
                 key={i}
                 path={`/create/${i + 1}`}
@@ -135,7 +145,7 @@ class CreateProductView extends React.Component {
         </div>
         <MobileStepper
           variant="text"
-          steps={steps.length}
+          steps={this.getSteps().length}
           position="static"
           activeStep={activeStep}
           className={classes.stepper}
@@ -143,7 +153,7 @@ class CreateProductView extends React.Component {
             <Button
               size="small"
               onClick={this.handleNext}
-              disabled={!steps[activeStep].isDone(this.props)}
+              disabled={!this.getSteps()[activeStep].isDone(this.props)}
             >
               Volgende
               <KeyboardArrowRight />
