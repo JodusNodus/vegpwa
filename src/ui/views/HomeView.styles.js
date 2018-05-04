@@ -14,5 +14,7 @@ export default theme => ({
   favoriteBtnIcon: {
     marginLeft: 7,
     color: "white"
-  }
+  },
+  tabsRoot: { flexGrow: 1 },
+  flexContainer: { flexGrow: 1 }
 });

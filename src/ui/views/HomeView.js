@@ -28,8 +28,10 @@ class HomeView extends React.Component {
       TABTYPE.new,
       TABTYPE.highestRated,
       TABTYPE.popular,
-      "vleesvervanger",
-      "snack"
+      "snack",
+      "ijs",
+      "lunch",
+      "vleesvervanger"
     ]
   };
 
@@ -106,7 +108,15 @@ class HomeView extends React.Component {
             </Button>
           }
         >
-          <Tabs value={currentTab} onChange={this.handleChange} scrollable>
+          <Tabs
+            value={currentTab}
+            onChange={this.handleChange}
+            scrollable
+            classes={{
+              root: classes.tabsRoot,
+              flexContainer: classes.tabsFlexContainer
+            }}
+          >
             {tabs.map(label => <Tab key={label} label={label} />)}
           </Tabs>
         </AppBar>
