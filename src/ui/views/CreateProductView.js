@@ -10,6 +10,7 @@ import Paper from "material-ui/Paper";
 import Typography from "material-ui/Typography";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import MediaQuery from "react-responsive";
 
 import BarcodeScannerView from "./BarcodeScannerView";
 import ProductPictureView from "./ProductPictureView";
@@ -24,7 +25,6 @@ import styles from "./CreateProductView.styles";
 @observer
 class CreateProductView extends React.Component {
   state = {
-    hideBars: false,
     activeStep: 0,
     steps: [
       {
@@ -121,27 +121,20 @@ class CreateProductView extends React.Component {
     this.handleRouteNext = handleNext;
   };
 
-  hideBars = () => {
-    this.setState({ hideBars: true });
-  };
-  showBars = () => {
-    this.setState({ hideBars: false });
-  };
-
   render() {
     const { classes, createProductStore } = this.props;
-    let { activeStep, hideBars } = this.state;
+    let { activeStep } = this.state;
 
     return (
       <div className={classes.root}>
-        {!hideBars && (
+        <MediaQuery query="(min-height: 400px)">
           <Paper square elevation={0} className={classes.header}>
             <Typography>
               Stap {activeStep + 1} van {this.getSteps().length}:{" "}
               {this.getSteps()[activeStep].label}
             </Typography>
           </Paper>
-        )}
+        </MediaQuery>
         <div className={classes.screenContainer}>
           <Switch>
             {this.getSteps().map(({ Component }, i) => (
@@ -149,12 +142,7 @@ class CreateProductView extends React.Component {
                 key={i}
                 path={`/create/${i + 1}`}
                 render={props => (
-                  <Component
-                    hideBars={this.hideBars}
-                    showBars={this.showBars}
-                    onNext={this.handleNextSet}
-                    {...props}
-                  />
+                  <Component onNext={this.handleNextSet} {...props} />
                 )}
               />
             ))}

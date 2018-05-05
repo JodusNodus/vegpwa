@@ -51,14 +51,8 @@ class BarcodeScannerView extends React.Component {
     }
   };
 
-  handleKey = evt => {
-    if (evt.key === "Enter") {
-      this.inputRef.blur();
-    }
-  };
-
   render() {
-    const { classes, showBars, hideBars } = this.props;
+    const { classes } = this.props;
     const { barcode } = this.state;
 
     return (
@@ -67,13 +61,9 @@ class BarcodeScannerView extends React.Component {
           <img src={ean13Image} className={classes.barcodeImg} alt="barcode" />
           <TextField
             value={barcode}
-            inputRef={ref => (this.inputRef = ref)}
             fullWidth
             onChange={this.handleChange}
             InputProps={{
-              onKeyUp: this.handleKey,
-              onFocus: hideBars,
-              onBlur: showBars,
               inputComponent: NumberFormatCustom,
               classes: {
                 input: classes.input

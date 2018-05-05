@@ -4,15 +4,16 @@ import Paper from "material-ui/Paper";
 import IconButton from "material-ui/IconButton";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import Typography from "material-ui/Typography";
+import MediaQuery from "react-responsive";
 
 import styles from "./ProductPaperLayout.styles";
 
 class ProductPaperLayout extends React.Component {
   render() {
-    const { imageSrc, title, onBack, children, classes } = this.props;
+    const { imageSrc, title, onBack, children, classes, ref } = this.props;
 
     return (
-      <div className={classes.container}>
+      <div className={classes.container} ref={ref}>
         <div className={classes.coverContainer}>
           {onBack ? (
             <IconButton
@@ -25,24 +26,33 @@ class ProductPaperLayout extends React.Component {
           ) : (
             undefined
           )}
-          {imageSrc ? (
+          {imageSrc && (
             <img
               src={imageSrc}
               alt="product"
               className={classes.coverPicture}
             />
-          ) : (
-            undefined
           )}
           <div className={classes.coverOverlay} />
         </div>
-        <Paper elevation={4} className={classes.paper}>
-          <Typography variant="display1" className={classes.productTitle}>
-            {title}
-          </Typography>
+        <MediaQuery query="(min-height: 400px)">
+          {fullHeight => (
+            <Paper
+              elevation={4}
+              className={
+                classes.paper +
+                " " +
+                (!fullHeight ? classes.keyboardOpenPaper : "")
+              }
+            >
+              <Typography variant="display1" className={classes.productTitle}>
+                {title}
+              </Typography>
 
-          {children}
-        </Paper>
+              {children}
+            </Paper>
+          )}
+        </MediaQuery>
       </div>
     );
   }

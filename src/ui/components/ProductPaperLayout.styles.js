@@ -4,7 +4,8 @@ export default theme => ({
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    maxWidth: 500
+    maxWidth: 500,
+    position: "relative"
   },
   coverContainer: {
     width: "100%",
@@ -61,6 +62,13 @@ export default theme => ({
     padding: 25,
     width: "calc(100% - 20px)",
     maxWidth: 450,
+    marginBottom: 10,
     boxSizing: "border-box"
+  },
+  keyboardOpenPaper: {
+    position: "absolute",
+    marginTop: 0,
+    top: "50%",
+    transform: "translateY(-50%)"
   }
 });

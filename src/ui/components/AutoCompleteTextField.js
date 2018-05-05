@@ -131,7 +131,9 @@ class IntegrationAutosuggest extends React.Component {
       className,
       endAdornment,
       onKeyPress,
-      onSuggestionSelected
+      onSuggestionSelected,
+      onFocus,
+      onBlur
     } = this.props;
 
     return (
@@ -152,6 +154,8 @@ class IntegrationAutosuggest extends React.Component {
           renderSuggestion={renderSuggestion}
           renderSuggestionsContainer={renderSuggestionsContainer}
           inputProps={{
+            onFocus,
+            onBlur,
             onKeyPress,
             endAdornment,
             classes,
