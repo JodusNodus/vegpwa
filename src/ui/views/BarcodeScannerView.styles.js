@@ -19,5 +19,10 @@ export default theme => ({
   input: {
     fontSize: "23pt",
     fontFamily: "monospace"
+  },
+  hiddenInput: {
+    position: "absolute",
+    left: 0,
+    opacity: 0
   }
 });

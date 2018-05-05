@@ -24,6 +24,7 @@ import styles from "./CreateProductView.styles";
 @observer
 class CreateProductView extends React.Component {
   state = {
+    hideBars: false,
     activeStep: 0,
     steps: [
       {
@@ -95,6 +96,7 @@ class CreateProductView extends React.Component {
       return;
     }
     if (this.handleRouteNext()) {
+      this.showBars();
       this.setState({ activeStep });
       navigate.toCreateProduct(activeStep + 1);
     }
@@ -107,6 +109,7 @@ class CreateProductView extends React.Component {
       navigate.toHome();
       this.props.createProductStore.clear();
     } else {
+      this.showBars();
       this.unblock();
       this.setState({ activeStep });
       navigate.toCreateProduct(activeStep + 1);
@@ -118,18 +121,27 @@ class CreateProductView extends React.Component {
     this.handleRouteNext = handleNext;
   };
 
+  hideBars = () => {
+    this.setState({ hideBars: true });
+  };
+  showBars = () => {
+    this.setState({ hideBars: false });
+  };
+
   render() {
     const { classes, createProductStore } = this.props;
-    let { activeStep } = this.state;
+    let { activeStep, hideBars } = this.state;
 
     return (
       <div className={classes.root}>
-        <Paper square elevation={0} className={classes.header}>
-          <Typography>
-            Stap {activeStep + 1} van {this.getSteps().length}:{" "}
-            {this.getSteps()[activeStep].label}
-          </Typography>
-        </Paper>
+        {!hideBars && (
+          <Paper square elevation={0} className={classes.header}>
+            <Typography>
+              Stap {activeStep + 1} van {this.getSteps().length}:{" "}
+              {this.getSteps()[activeStep].label}
+            </Typography>
+          </Paper>
+        )}
         <div className={classes.screenContainer}>
           <Switch>
             {this.getSteps().map(({ Component }, i) => (
@@ -137,7 +149,12 @@ class CreateProductView extends React.Component {
                 key={i}
                 path={`/create/${i + 1}`}
                 render={props => (
-                  <Component onNext={this.handleNextSet} {...props} />
+                  <Component
+                    hideBars={this.hideBars}
+                    showBars={this.showBars}
+                    onNext={this.handleNextSet}
+                    {...props}
+                  />
                 )}
               />
             ))}

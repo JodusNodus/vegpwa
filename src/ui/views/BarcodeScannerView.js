@@ -15,7 +15,7 @@ function NumberFormatCustom(props) {
   return (
     <NumberFormat
       {...other}
-      ref={inputRef}
+      getInputRef={inputRef}
       size={15}
       onValueChange={values => onChange(values.value)}
       format="# ###### ######"
@@ -51,8 +51,14 @@ class BarcodeScannerView extends React.Component {
     }
   };
 
+  handleKey = evt => {
+    if (evt.key === "Enter") {
+      this.inputRef.blur();
+    }
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, showBars, hideBars } = this.props;
     const { barcode } = this.state;
 
     return (
@@ -61,10 +67,13 @@ class BarcodeScannerView extends React.Component {
           <img src={ean13Image} className={classes.barcodeImg} alt="barcode" />
           <TextField
             value={barcode}
-            onChange={this.handleChange}
+            inputRef={ref => (this.inputRef = ref)}
             fullWidth
-            autoFocus
+            onChange={this.handleChange}
             InputProps={{
+              onKeyUp: this.handleKey,
+              onFocus: hideBars,
+              onBlur: showBars,
               inputComponent: NumberFormatCustom,
               classes: {
                 input: classes.input
