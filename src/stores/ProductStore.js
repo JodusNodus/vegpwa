@@ -54,13 +54,27 @@ export default class ProductStore {
       .format("DD MMM YY");
   }
 
-  fetchProduct = flow(function*(ean) {
-    this.clear();
-    const storedProduct = this.stores.favoritesStore.get(ean);
-    if (storedProduct) {
-      this.product = storedProduct;
+  fetchProduct = flow(function*(ean, overwrite = false) {
+    if (!overwrite) {
+      this.clear();
+
+      const storedProduct = this.stores.favoritesStore.get(ean);
+      if (storedProduct) {
+        this.product = storedProduct;
+      }
     }
     const { product } = yield api.fetchProduct(ean);
     this.product = product;
+  });
+
+  rateProduct = flow(function*(rating) {
+    const ean = this.product.ean;
+    if (!ean) return;
+    try {
+      yield api.rateProduct(ean, rating);
+      this.fetchProduct(ean, true);
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

@@ -11,6 +11,11 @@ import StoreIcon from "@material-ui/icons/Store";
 import Snackbar from "material-ui/Snackbar";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogTitle
+} from "material-ui/Dialog";
 
 import ProductPaperLayout from "../components/ProductPaperLayout";
 
@@ -23,7 +28,11 @@ import styles from "./ProductView.styles";
 class ProductView extends React.Component {
   state = {
     ean: null,
-    snackBarText: null
+    snackBarText: null,
+    ratingDialog: {
+      open: false,
+      rating: 1
+    }
   };
 
   constructor(props) {
@@ -73,15 +82,30 @@ class ProductView extends React.Component {
     this.setState({ snackBarText: null });
   };
 
-  handleRateBtn = () => {};
+  handleRateBtn = () => {
+    this.setState({ ratingDialog: { ...this.state.ratingDialog, open: true } });
+  };
 
-  handleIncorrectBtn = () => {};
+  handleRatingDialogClose = () => {
+    this.setState({
+      ratingDialog: { ...this.state.ratingDialog, open: false }
+    });
+  };
+
+  handleRatingDialogChange = rating => {
+    this.setState({ ratingDialog: { ...this.state.ratingDialog, rating } });
+  };
+
+  handleRatingDialogConfirm = () => {
+    this.props.productStore.rateProduct(this.state.ratingDialog.rating);
+    this.handleRatingDialogClose();
+  };
 
   handleIncorrectBtn = () => {};
 
   render() {
     const { classes, productStore, favoritesStore } = this.props;
-    const { ean } = this.state;
+    const { ean, ratingDialog } = this.state;
     const isFavorite = favoritesStore.isFavorite(ean);
 
     const { product } = productStore;
@@ -202,9 +226,46 @@ class ProductView extends React.Component {
             </Button>
           ]}
         />
+
+        <RateDialog
+          onClose={this.handleRatingDialogClose}
+          onChange={this.handleRatingDialogChange}
+          onConfirm={this.handleRatingDialogConfirm}
+          classes={classes}
+          {...ratingDialog}
+        />
       </div>
     );
   }
 }
+
+const RateDialog = ({
+  open = false,
+  rating = 0,
+  onChange,
+  onClose,
+  onConfirm,
+  classes
+}) => (
+  <Dialog onClose={onClose} open={open} aria-labelledby="rating-dialog-title">
+    <DialogTitle id="rating-dialog-title">Beoordeel product</DialogTitle>
+    <DialogContent>
+      <StarRating
+        rating={rating}
+        onChange={onChange}
+        className={classes.interactiveStarRating}
+        size={40}
+      />
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={onClose} color="primary">
+        Annuleren
+      </Button>
+      <Button onClick={onConfirm} color="primary" autoFocus>
+        Verzenden
+      </Button>
+    </DialogActions>
+  </Dialog>
+);
 
 export default withStyles(styles)(ProductView);

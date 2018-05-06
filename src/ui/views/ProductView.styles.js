@@ -36,5 +36,10 @@ export default theme => ({
   supermarketItem: {
     textDecoration: "none",
     cursor: "pointer"
+  },
+  interactiveStarRating: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center"
   }
 });
