@@ -101,7 +101,9 @@ class ProductView extends React.Component {
     this.handleRatingDialogClose();
   };
 
-  handleIncorrectBtn = () => {};
+  handleIncorrectBtn = () => {
+    this.props.productStore.markProductInvalid();
+  };
 
   render() {
     const { classes, productStore, favoritesStore } = this.props;
@@ -169,6 +171,7 @@ class ProductView extends React.Component {
               color="secondary"
               className={classes.btn}
               onClick={this.handleIncorrectBtn}
+              disabled={product.userHasCorrected}
             >
               incorrect
             </Button>

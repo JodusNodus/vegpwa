@@ -77,4 +77,16 @@ export default class ProductStore {
       console.error(err);
     }
   });
+
+  markProductInvalid = flow(function*() {
+    const ean = this.product.ean;
+    if (!ean) return;
+
+    try {
+      yield api.markProductInvalid(ean);
+      this.product.userHasCorrected = true;
+    } catch (err) {
+      console.error(err);
+    }
+  });
 }
