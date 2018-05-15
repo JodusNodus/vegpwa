@@ -11,33 +11,26 @@ async function updateLocation() {
     if (process.env.NODE_ENV === "production") {
       coords = await getCurrentPosition();
     }
-  } catch (e) {
-    coords = await getCurrentPosition();
-  }
+  } catch (e) {}
 
   await api.updateLocation(coords);
 }
 
 export default class UserStore {
   @observable user;
-  @observable loginState = STATE.pending;
-  @observable locationState = STATE.pending;
+  @observable loginState = STATE.none;
+  @observable locationState = STATE.none;
 
-  tryLogin = flow(function*() {
-    navigate.toSplash();
-    this.loginState = STATE.pending;
+  checkLogin = flow(function*() {
     this.locationState = STATE.pending;
 
     try {
       yield updateLocation();
-      this.locationState = STATE.done;
-      this.loginState = STATE.done;
-
       navigate.toHome();
+      this.locationState = STATE.done;
     } catch (error) {
       this.locationState = STATE.error;
-
-      navigate.toSignup();
+      navigate.toLogin();
     }
   });
 
@@ -54,15 +47,7 @@ export default class UserStore {
     this.user = user;
     this.loginState = STATE.done;
 
-    this.locationState = STATE.pending;
-    try {
-      yield updateLocation();
-      this.locationState = STATE.done;
-
-      navigate.toHome();
-    } catch (error) {
-      this.locationState = STATE.error;
-    }
+    yield updateLocation();
   });
 
   signup = flow(function*(userSignupForm) {
@@ -78,12 +63,15 @@ export default class UserStore {
     this.user = user;
     this.loginState = STATE.done;
 
+    yield updateLocation();
+  });
+
+  updateLocation = flow(function*() {
     this.locationState = STATE.pending;
     try {
       yield updateLocation();
-      this.locationState = STATE.done;
-
       navigate.toHome();
+      this.locationState = STATE.done;
     } catch (error) {
       this.locationState = STATE.error;
     }

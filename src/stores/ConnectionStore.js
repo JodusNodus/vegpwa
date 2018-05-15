@@ -12,7 +12,7 @@ export default class ConnectionStore {
 
   @action.bound
   setOffline() {
-    navigate.toFavorites();
+    navigate.toFavorites(true);
     this.onLine = false;
   }
 

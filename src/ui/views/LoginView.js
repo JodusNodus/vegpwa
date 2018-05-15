@@ -35,7 +35,9 @@ class LoginView extends React.Component {
     showPassword: false
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.userStore.checkLogin();
+  }
 
   handleSignupClick = () => {
     const { fields, loginForm } = this.state;
@@ -83,6 +85,11 @@ class LoginView extends React.Component {
   render() {
     const { classes, userStore } = this.props;
     const { fields, errors, showPassword, loginForm } = this.state;
+
+    if (userStore.loginState === STATE.pending)
+      return <SplashView text="Logging in" />;
+    if (userStore.locationState === STATE.pending)
+      return <SplashView text="Locatie bepalen" />;
 
     return (
       <div className={classes.root}>

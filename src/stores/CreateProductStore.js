@@ -1,4 +1,5 @@
 import { observable, action, flow, toJS } from "mobx";
+import { STATE } from "../constants";
 
 import _ from "lodash";
 import * as navigate from "../services/navigation";
@@ -21,6 +22,8 @@ export default class CreateProductStore {
   @observable labelSuggestions = [];
   @observable brands = [];
   @observable supermarkets = [];
+
+  @observable creationState = STATE.none;
 
   @action.bound
   setEan(ean) {
@@ -128,7 +131,7 @@ export default class CreateProductStore {
 
   createProduct = flow(function*() {
     try {
-      navigate.toSplash();
+      this.creationState = STATE.pending;
       const product = {
         ean: this.ean,
         labels: toJS(this.productLabels),
@@ -137,8 +140,10 @@ export default class CreateProductStore {
         placeid: this.placeid
       };
       yield api.createProduct(product);
+      this.creationState = STATE.done;
       navigate.toProduct(this.ean);
     } catch (error) {
+      this.creationState = STATE.error;
       console.error(error);
     }
     this.clear();
