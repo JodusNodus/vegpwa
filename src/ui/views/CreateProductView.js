@@ -1,5 +1,6 @@
 import React from "react";
 
+import { STATE } from "../../constants";
 import { inject, observer } from "mobx-react";
 import { withStyles } from "material-ui/styles";
 
@@ -12,6 +13,7 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import MediaQuery from "react-responsive";
 
+import SplashView from "./SplashView";
 import BarcodeScannerView from "./BarcodeScannerView";
 import ProductPictureView from "./ProductPictureView";
 import ProductFormView from "./ProductFormView";
@@ -124,6 +126,10 @@ class CreateProductView extends React.Component {
   render() {
     const { classes, createProductStore } = this.props;
     let { activeStep } = this.state;
+
+    if (createProductStore.creationState === STATE.pending) {
+      return <SplashView text="Product aanmaken" />;
+    }
 
     return (
       <div className={classes.root}>
