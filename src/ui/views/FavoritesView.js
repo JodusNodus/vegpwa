@@ -12,6 +12,7 @@ import ProductTileGrid from "../components/ProductTileGrid";
 import * as navigate from "../../services/navigation";
 import styles from "./FavoritesView.styles";
 
+@inject("connectionStore")
 @inject("favoritesStore")
 @observer
 class FavoritesView extends React.Component {
@@ -19,21 +20,19 @@ class FavoritesView extends React.Component {
     navigate.toCreateProduct();
   };
 
-  handleBack = () => {
-    navigate.toHome();
-  };
-
   render() {
-    const { classes, favoritesStore } = this.props;
+    const { classes, favoritesStore, connectionStore } = this.props;
 
     return (
       <div className={classes.root}>
         <AppBar
           title="Favorites"
           leftButton={
-            <IconButton aria-label="back" onClick={this.handleBack}>
-              <BackIcon style={{ color: "white" }} />
-            </IconButton>
+            connectionStore.onLine && (
+              <IconButton aria-label="back" onClick={navigate.goBack}>
+                <BackIcon style={{ color: "white" }} />
+              </IconButton>
+            )
           }
         />
 
