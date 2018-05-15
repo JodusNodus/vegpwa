@@ -27,7 +27,6 @@ export default class UserStore {
     try {
       yield updateLocation();
       navigate.toHome();
-      this.locationState = STATE.done;
     } catch (error) {
       this.locationState = STATE.error;
       navigate.toLogin();

@@ -29,7 +29,7 @@ class HomeView extends React.Component {
       TABTYPE.highestRated,
       TABTYPE.popular,
       "snack",
-      "ijs",
+      "ice",
       "lunch",
       "vleesvervanger"
     ]
@@ -44,8 +44,9 @@ class HomeView extends React.Component {
   };
 
   getTabProducts = i => {
+    const { tabs } = this.state;
     const { homeStore } = this.props;
-    switch (this.state.tabs[i]) {
+    switch (tabs[i]) {
       case TABTYPE.new:
         return homeStore.newProducts;
       case TABTYPE.highestRated:
@@ -53,13 +54,14 @@ class HomeView extends React.Component {
       case TABTYPE.popular:
         return homeStore.popularProducts;
       default:
-        return [];
+        return homeStore.getLabelProducts(tabs[i]);
     }
   };
 
   switchTab = i => {
     const { homeStore } = this.props;
-    switch (this.state.tabs[i]) {
+    const { tabs } = this.state;
+    switch (tabs[i]) {
       case TABTYPE.new:
         homeStore.fetchNewProducts();
         break;
@@ -70,6 +72,7 @@ class HomeView extends React.Component {
         homeStore.fetchPopularProducts();
         break;
       default:
+        homeStore.fetchLabelProducts(tabs[i]);
         break;
     }
     this.setState({ currentTab: i });
