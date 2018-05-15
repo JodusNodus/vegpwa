@@ -7,6 +7,7 @@ import Button from "material-ui/Button";
 
 import AddIcon from "@material-ui/icons/Add";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import SearchIcon from "@material-ui/icons/Search";
 
 import ProductTileGrid from "../components/ProductTileGrid";
 
@@ -30,7 +31,7 @@ class HomeView extends React.Component {
       TABTYPE.popular,
       "snack",
       "ice",
-      "lunch",
+      "yoghurt",
       "vleesvervanger"
     ]
   };
@@ -93,6 +94,10 @@ class HomeView extends React.Component {
     navigate.toFavorites();
   };
 
+  handleSearchClick = () => {
+    navigate.toSearch();
+  };
+
   render() {
     const { classes } = this.props;
     const { currentTab, tabs } = this.state;
@@ -101,15 +106,22 @@ class HomeView extends React.Component {
       <div className={classes.root}>
         <AppBar
           title="Home"
-          rightButton={
+          rightButton={[
             <Button
+              key="searchBtn"
+              onClick={this.handleSearchClick}
+              style={{ color: "white" }}
+            >
+              <SearchIcon />
+            </Button>,
+            <Button
+              key="favBtn"
               onClick={this.handleFavoritesClick}
               style={{ color: "white" }}
             >
-              Favorieten
-              <FavoriteIcon className={classes.favoriteBtnIcon} />
+              <FavoriteIcon />
             </Button>
-          }
+          ]}
         >
           <Tabs
             value={currentTab}

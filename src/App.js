@@ -10,6 +10,7 @@ import HomeView from "./ui/views/HomeView";
 import ProductView from "./ui/views/ProductView";
 import CreateProductView from "./ui/views/CreateProductView";
 import FavoritesView from "./ui/views/FavoritesView";
+import SearchView from "./ui/views/SearchView";
 
 import theme from "./ui/theme";
 
@@ -85,6 +86,7 @@ export default class App extends React.Component {
             <Route path="/product/:ean" component={ProductView} />
             <Route path="/create" component={CreateProductView} />
             <Route path="/favorites" component={FavoritesView} />
+            <Route path="/search" component={SearchView} />
           </AnimatedSwitch>
 
           <ConnectionSnackBar />

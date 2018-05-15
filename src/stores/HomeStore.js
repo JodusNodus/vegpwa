@@ -1,4 +1,4 @@
-import { observable, flow, action } from "mobx";
+import { observable, flow } from "mobx";
 
 import * as api from "../services/vegapi";
 

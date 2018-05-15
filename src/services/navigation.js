@@ -2,6 +2,7 @@ import createHistory from "history/createBrowserHistory";
 
 export const history = createHistory();
 
+export const toSearch = () => history.push("/search");
 export const toSignup = () => history.replace("/login");
 export const toLogin = () => history.replace("/login");
 export const toHome = () => history.replace("/home");
