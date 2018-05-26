@@ -13,6 +13,7 @@ import registerServiceWorker from "./registerServiceWorker";
 
 if (stores.connectionStore.onLine) {
   navigate.toLogin();
+  stores.userStore.checkLogin(() => hydrateStores(stores));
 } else {
   navigate.toFavorites();
 }
@@ -27,7 +28,3 @@ ReactDOM.render(
 );
 
 registerServiceWorker();
-
-hydrateStores(stores)
-  .then(() => console.log("Stores hydrated"))
-  .catch(console.error);

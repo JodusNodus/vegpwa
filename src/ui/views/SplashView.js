@@ -15,11 +15,11 @@ const styles = {
 
 class SplashView extends React.Component {
   render() {
-    const { text } = this.props;
+    const { text, children } = this.props;
     return (
       <div className={this.props.classes.root}>
         <CircularProgress size={80} />
-        {!!text && <Typography variant="title">{text}</Typography>}
+        {!!text ? <Typography variant="title">{text}</Typography> : children}
       </div>
     );
   }

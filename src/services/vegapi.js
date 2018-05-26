@@ -1,5 +1,28 @@
 import { VEGAPI_URL } from "../constants";
 
+const timeout = (ms = 0) =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+
+async function retryReq(args = [], attemps = 2) {
+  let res;
+  for (let i = 0; i < attemps; i++) {
+    try {
+      res = await req.apply(null, args);
+      break;
+    } catch (err) {
+      if (typeof err === "number") {
+        break;
+      }
+      await timeout(1000 * (i + 1));
+    }
+  }
+  return res;
+}
+
 async function req(path = "/", method = "GET", body) {
   const options = {
     method,
@@ -20,7 +43,7 @@ async function req(path = "/", method = "GET", body) {
   const url = VEGAPI_URL + path;
   const resp = await fetch(url, options);
   if (!resp.ok) {
-    throw new Error(resp.statusText);
+    throw resp.status;
   }
   try {
     return await resp.json();
@@ -31,7 +54,7 @@ async function req(path = "/", method = "GET", body) {
 
 export async function signup(signupForm) {
   try {
-    const { user } = await req("/signup", "POST", signupForm);
+    const { user } = await retryReq(["/signup", "POST", signupForm], 4);
     return user;
   } catch (error) {
     return null;
@@ -40,15 +63,15 @@ export async function signup(signupForm) {
 
 export async function login(loginForm) {
   try {
-    const { user } = await req("/login", "POST", loginForm);
+    const { user } = await retryReq(["/login", "POST", loginForm], 4);
     return user;
   } catch (error) {
     return null;
   }
 }
 
-export async function updateLocation({ lat, lng }) {
-  await req("/api/location", "POST", { lat, lng });
+export async function updateLocation(coords) {
+  await retryReq(["/api/location", "POST", coords], 4);
 }
 
 const querify = function(obj) {
@@ -62,42 +85,49 @@ const querify = function(obj) {
 
 export async function fetchProducts(options) {
   const query = querify(options);
-  return await req("/api/products?" + query);
+  return await retryReq(["/api/products?" + query]);
 }
 
 export async function fetchProduct(ean) {
-  return await req("/api/products/" + ean);
+  return await retryReq(["/api/products/" + ean]);
 }
 
 export async function rateProduct(ean, rating) {
-  await req("/api/products/" + ean + "/rate", "POST", {
-    rating
-  });
+  await retryReq(
+    [
+      "/api/products/" + ean + "/rate",
+      "POST",
+      {
+        rating
+      }
+    ],
+    2
+  );
 }
 
 export async function markProductInvalid(ean) {
-  await req("/api/products/" + ean, "DELETE");
+  await retryReq(["/api/products/" + ean, "DELETE"]);
 }
 
 export async function fetchSupermarkets() {
-  return await req("/api/supermarkets");
+  return await retryReq(["/api/supermarkets"]);
 }
 
 export async function fetchLabels() {
-  return await req("/api/labels");
+  return await retryReq(["/api/labels"]);
 }
 
 export async function fetchBrands() {
-  return await req("/api/brands");
+  return await retryReq(["/api/brands"]);
 }
 
 export async function uploadProductPicture(ean, file) {
   const form = new FormData();
   form.append("ean", ean);
   form.append("picture", file);
-  return await req("/api/products/picture", "POST", form);
+  return await retryReq(["/api/products/picture", "POST", form]);
 }
 
 export async function createProduct(product) {
-  await req("/api/products", "POST", product);
+  await retryReq(["/api/products", "POST", product]);
 }

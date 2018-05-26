@@ -29,5 +29,6 @@ stores.searchStore = new SearchStore(stores);
 export default stores;
 
 export async function hydrateStores(stores) {
+  await hydrate("userStore", stores.userStore);
   await hydrate("favoritesStore", stores.favoritesStore);
 }

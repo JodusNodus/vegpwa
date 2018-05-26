@@ -4,7 +4,6 @@ import { withStyles } from "material-ui/styles";
 import IconButton from "material-ui/IconButton";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import SearchIcon from "@material-ui/icons/Search";
-import Typography from "material-ui/Typography";
 import { STATE } from "../../constants";
 
 import TextField from "material-ui/TextField";

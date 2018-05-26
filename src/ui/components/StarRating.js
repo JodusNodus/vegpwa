@@ -1,5 +1,4 @@
 import React from "react";
-import Icon from "material-ui/Icon";
 import IconButton from "material-ui/IconButton";
 import StarIcon from "@material-ui/icons/Star";
 import amber from "material-ui/colors/amber";
