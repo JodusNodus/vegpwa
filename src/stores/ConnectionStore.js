@@ -18,7 +18,7 @@ export default class ConnectionStore {
 
   @action.bound
   setOnline() {
-    navigate.toLogin();
+    this.stores.userStore.checkLogin();
     this.onLine = true;
   }
 }

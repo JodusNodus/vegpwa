@@ -13,7 +13,6 @@ import registerServiceWorker from "./registerServiceWorker";
 
 if (stores.connectionStore.onLine) {
   stores.userStore.checkLogin(() => hydrateStores(stores));
-  navigate.toLogin();
 } else {
   navigate.toFavorites();
 }

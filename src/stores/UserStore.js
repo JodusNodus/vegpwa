@@ -16,8 +16,11 @@ export default class UserStore {
 
   checkLogin = flow(function*(hydrateStores) {
     this.locationState = STATE.pending;
+    navigate.toLogin();
 
-    yield hydrateStores();
+    if (hydrateStores) {
+      yield hydrateStores();
+    }
 
     if (this.user) {
       yield this.updateLocation();

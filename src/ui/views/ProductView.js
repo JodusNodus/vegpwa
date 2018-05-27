@@ -22,6 +22,7 @@ import ProductPaperLayout from "../components/ProductPaperLayout";
 import * as navigate from "../../services/navigation";
 import styles from "./ProductView.styles";
 
+@inject("connectionStore")
 @inject("favoritesStore")
 @inject("productStore")
 @observer
@@ -106,7 +107,12 @@ class ProductView extends React.Component {
   };
 
   render() {
-    const { classes, productStore, favoritesStore } = this.props;
+    const {
+      classes,
+      productStore,
+      favoritesStore,
+      connectionStore: { onLine }
+    } = this.props;
     const { ean, ratingDialog } = this.state;
     const isFavorite = favoritesStore.isFavorite(ean);
 
@@ -163,6 +169,7 @@ class ProductView extends React.Component {
               variant="raised"
               className={classes.btn}
               onClick={this.handleRateBtn}
+              disabled={!onLine}
             >
               beoordelen
             </Button>
@@ -171,7 +178,7 @@ class ProductView extends React.Component {
               color="secondary"
               className={classes.btn}
               onClick={this.handleIncorrectBtn}
-              disabled={product.userHasCorrected}
+              disabled={product.userHasCorrected || !onLine}
             >
               incorrect
             </Button>
@@ -193,7 +200,11 @@ class ProductView extends React.Component {
                 key={placeid}
                 target="blank"
                 className={classes.supermarketItem}
-                href={`https://www.google.com/maps/search/?api=1&query=${name}&query_place_id=${placeid}`}
+                href={
+                  onLine
+                    ? `https://www.google.com/maps/search/?api=1&query=${name}&query_place_id=${placeid}`
+                    : undefined
+                }
               >
                 <ListItem>
                   <Avatar>
