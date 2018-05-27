@@ -26,11 +26,11 @@ class ProductFormView extends React.Component {
     const { brandname, productName } = this.props.createProductStore;
     const errors = {};
 
-    if (productName.length < 3) {
+    if (productName.length < 2) {
       errors.productName = "Too short";
     }
 
-    if (brandname.length < 3) {
+    if (brandname.length < 2) {
       errors.brandname = "Too short";
     }
 

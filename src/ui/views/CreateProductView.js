@@ -98,7 +98,6 @@ class CreateProductView extends React.Component {
       return;
     }
     if (this.handleRouteNext()) {
-      this.showBars();
       this.setState({ activeStep });
       navigate.toCreateProduct(activeStep + 1);
     }
@@ -111,7 +110,6 @@ class CreateProductView extends React.Component {
       navigate.toHome();
       this.props.createProductStore.clear();
     } else {
-      this.showBars();
       this.unblock();
       this.setState({ activeStep });
       navigate.toCreateProduct(activeStep + 1);
