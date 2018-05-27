@@ -7,7 +7,7 @@ import { STATE } from "../constants";
 import { getCurrentPosition } from "../services/location";
 
 export default class UserStore {
-  @persist("map")
+  @persist("object")
   @observable
   user;
   @observable location;
@@ -19,15 +19,10 @@ export default class UserStore {
 
     yield hydrateStores();
 
-    try {
-      if (!this.user) {
-        throw new Error();
-      }
-
+    if (this.user) {
       yield this.updateLocation();
-      navigate.toHome();
-    } catch (error) {
-      this.locationState = STATE.error;
+    } else {
+      this.locationState = STATE.none;
       navigate.toLogin();
     }
   });

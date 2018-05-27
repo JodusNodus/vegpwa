@@ -12,8 +12,8 @@ import stores, { hydrateStores } from "./stores/index";
 import registerServiceWorker from "./registerServiceWorker";
 
 if (stores.connectionStore.onLine) {
-  navigate.toLogin();
   stores.userStore.checkLogin(() => hydrateStores(stores));
+  navigate.toLogin();
 } else {
   navigate.toFavorites();
 }
