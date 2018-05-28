@@ -15,6 +15,7 @@ async function retryReq(args = [], attemps = 2) {
       break;
     } catch (err) {
       if (typeof err === "number") {
+        throw err;
         break;
       }
       await timeout(1000 * (i + 1));

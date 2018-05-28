@@ -64,26 +64,27 @@ export default class UserStore {
 
   updateLocation = flow(function*() {
     this.locationState = STATE.pending;
+    let coords;
+
     try {
-      let coords;
-
-      try {
-        if (process.env.NODE_ENV === "development") {
-          coords = { lat: 51.376944599999995, lng: 4.4555944 };
-        }
-      } catch (e) {}
-
-      if (!coords) {
-        coords = yield getCurrentPosition();
+      if (process.env.NODE_ENV === "development") {
+        coords = { lat: 51.376944599999995, lng: 4.4555944 };
       }
+    } catch (e) {}
 
-      this.location = coords;
+    if (!coords) {
+      coords = yield getCurrentPosition();
+    }
 
+    this.location = coords;
+
+    try {
       yield api.updateLocation(coords);
       navigate.toHome();
       this.locationState = STATE.done;
     } catch (error) {
       this.locationState = STATE.error;
+      this.loginState = STATE.error;
     }
   });
 }
